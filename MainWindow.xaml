@@ -1,0 +1,47 @@
+﻿<Window x:Name="Window_Main" x:Class="Human_Resources_Department.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Human_Resources_Department"
+        mc:Ignorable="d"
+        Title="Відділ кадрів" Height="720" Width="1280"
+        Loaded="Window_Main_Loaded"
+        Closing="Window_Main_Closing">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="479*"/>
+            <ColumnDefinition Width="157*"/>
+        </Grid.ColumnDefinitions>
+        <DataGrid x:Name="grid_employeers" FontSize="18" CanUserAddRows="False" SelectionMode="Single" CanUserDeleteRows="False"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Прізвище" MinWidth="100" Binding="{Binding surname}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Ім'я" MinWidth="100"  Binding="{Binding name}"></DataGridTextColumn>
+                <DataGridTextColumn Header="По батькові" MinWidth="150"  Binding="{Binding lastname}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Пiдроздiл" MinWidth="150"  Binding="{Binding department}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Посада" MinWidth="150"  Binding="{Binding position}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Дата прийому на роботу" MinWidth="150" Binding="{Binding employment_date}"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Column="1" Margin="5">
+            <Button x:Name="button_createNew"
+                    Margin="0,12,10,10" 
+                    MinHeight="75" 
+                    HorizontalAlignment="Right" 
+                    Width="250" Height="50"
+                    Click="button_createNew_Click">
+                button new
+            </Button>
+            <Button x:Name="button_debug" 
+                    Margin="0,12,10,10" 
+                    MinHeight="75" 
+                    HorizontalAlignment="Right" 
+                    Width="250" 
+                    Height="50"
+                    Click="button_debug_Click">
+                DEBUG
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

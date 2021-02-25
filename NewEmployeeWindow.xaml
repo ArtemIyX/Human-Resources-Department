@@ -1,0 +1,118 @@
+﻿<Window x:Class="Human_Resources_Department.NewEmployeeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Human_Resources_Department"
+        mc:Ignorable="d"
+        Title="Новий сотрудник"
+        Width="1280"
+        Height="720"
+        Loaded="Window_Loaded"
+        Closing="Window_Closing">
+    <Window.Resources>
+        <Style TargetType="TextBlock" x:Key="Text_1">
+            <Setter Property="Margin" Value="0,4,5,3"></Setter>
+            <Setter Property="TextAlignment" Value="Right"></Setter>
+            <Setter Property="FontSize" Value="18"></Setter>
+            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="Text_2">
+            <Setter Property="Margin" Value="0,0,5,5"></Setter>
+            <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
+            <Setter Property="TextAlignment" Value="Center"></Setter>
+            <Setter Property="FontSize" Value="18"></Setter>
+            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+        </Style>
+        <Style TargetType="TextBox" x:Key="TextBox_1">
+            <Setter Property="Margin" Value="5,7,10,4"></Setter>
+            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+        </Style>
+
+    </Window.Resources>
+    <Grid x:Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="161*"/>
+            <ColumnDefinition Width="180*"/>
+            <ColumnDefinition Width="18*"/>
+            <ColumnDefinition Width="227*"/>
+            <ColumnDefinition Width="320*"/>
+            <ColumnDefinition Width="366*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75*"/>
+            <RowDefinition Height="35*"/>
+            <RowDefinition Height="35*"/>
+            <RowDefinition Height="35*"/>
+            <RowDefinition Height="35*"/>
+            <RowDefinition Height="35*"/>
+            <RowDefinition Height="35*"/>
+            <RowDefinition Height="35*"/>
+            <RowDefinition Height="35*"/>
+            <RowDefinition Height="330*"/>
+            <RowDefinition Height="100*"/>
+        </Grid.RowDefinitions>
+        <!--Первый блок-->
+        <TextBlock Style="{StaticResource Text_1 }"  Grid.Row="1"  Text="Прiзвище"/>
+        <TextBlock Style="{StaticResource Text_1 }"  Grid.Row="2"  Text="Им'я" />
+        <TextBlock Style="{StaticResource Text_1 }"  Grid.Row="3"  Text="По батьковi" Margin="0,3,5,3"  />
+        <TextBlock Style="{StaticResource Text_1 }"  Grid.Row="4"  Text="Пiдроздiл" Margin="0,4,5,2" />
+        <TextBlock Style="{StaticResource Text_1 }"  Grid.Row="5"  Text="Посада" Margin="0,5,5,2" />
+        <TextBlock Style="{StaticResource Text_1 }"  Grid.Row="6"  Text="Моб. Телефон" Margin="0,6,5,1" />
+        <TextBlock Style="{StaticResource Text_1 }"  Grid.Row="7"  Text="Громадянство" Margin="0,6,5,1" />
+        <TextBlock Style="{StaticResource Text_1 }"  Grid.Row="8"  Text="Дата народження" Margin="0,5,5,2" />
+        <DatePicker x:Name="DatePicker_Birthday" Grid.Row="8" Grid.Column="1" Margin="2"></DatePicker>
+        <Grid x:Name="SubGrid_1" Grid.Column="0" Grid.ColumnSpan="4" Margin="0,0,0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="185*"/>
+                <ColumnDefinition Width="168*"/>
+                <ColumnDefinition Width="135*"/>
+                <ColumnDefinition Width="140*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="17*"/>
+                <RowDefinition Height="16*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Style="{StaticResource Text_2 }" Grid.Column="0" Text="Дата заповненя" Height="24" />
+            <TextBlock Style="{StaticResource Text_2 }" Grid.Column="1"  Text="Iндивiдуальний iндефiкацiйний номер" FontSize="10" Height="27" Margin="0,-1,5,5"/>
+            <TextBlock Style="{StaticResource Text_2 }" Grid.Column="2"  Text="Стать"  FontSize="18" Height="24"/>
+            <TextBlock Style="{StaticResource Text_2 }" Grid.Column="3" Text="Вид роботи" Height="24"/>
+            <DatePicker Grid.Row="1" x:Name="DatePicker_Completion"></DatePicker>
+            <TextBox x:Name="text_iid"    TextAlignment="Center" Style="{StaticResource TextBox_1 }" Margin="0" Grid.Column="1"  Grid.Row="1" TextWrapping="Wrap" Text=""/>
+            <ComboBox x:Name="Combo_gender" Grid.Row="1" Grid.Column="2" Margin="0" />
+            <ComboBox x:Name="Combo_workType" Grid.Row="1" Grid.Column="3" Margin="0"/>
+        </Grid>
+        <TextBox x:Name="text_surname"     Style="{StaticResource TextBox_1 }" Grid.Column="1"  Grid.Row="1"  MaxLength="25"  />
+        <TextBox x:Name="text_name"        Style="{StaticResource TextBox_1 }" Grid.Column="1"  Grid.Row="2"  MaxLength="25" />
+        <TextBox x:Name="text_lastname"    Style="{StaticResource TextBox_1 }" Grid.Column="1"  Grid.Row="3"   MaxLength="25"  Margin="5,7,10,3" />
+        <TextBox x:Name="text_department"  Style="{StaticResource TextBox_1 }" Grid.Column="1"  Grid.Row="4" MaxLength="50" Margin="5,8,10,2" />
+        <TextBox x:Name="text_position"    Style="{StaticResource TextBox_1 }" Grid.Column="1" Grid.Row="5"  MaxLength="50" Margin="5,8,10,3" />
+        <TextBox x:Name="text_phone"       Style="{StaticResource TextBox_1 }" Grid.Column="1" Grid.Row="6"  MaxLength="15" Margin="5,8,10,3" />
+        <TextBox x:Name="text_citizenship" Style="{StaticResource TextBox_1 }" Grid.Column="1" Grid.Row="7"  MaxLength="25" Margin="5,8,10,3" />
+        <!--Второй блок-->
+        <TextBlock Style="{StaticResource Text_1 }" Grid.Column="3" Grid.Row="1"  Text="Останнє мiсце роботи"/>
+        <TextBlock Style="{StaticResource Text_1 }" Grid.Column="3" Grid.Row="2"  Text="Остання посада"/>
+        <TextBlock Style="{StaticResource Text_1 }" Grid.Column="3" Grid.Row="3"  Text="Дата звiльнення"/>
+        <TextBlock Style="{StaticResource Text_1 }" Grid.Column="3" Grid.Row="4"  Text="Причина звiльнення"/>
+        <TextBlock Style="{StaticResource Text_1 }" Grid.Column="3" Grid.Row="5"  Text="Стаж роботи"/>
+        <TextBlock Style="{StaticResource Text_1 }" Grid.Column="3" Grid.Row="6"  Text="Пенсiя"/>
+        <TextBlock Style="{StaticResource Text_1 }" Grid.Column="3" Grid.Row="7"  Text="Роддинний стан"/>
+        <TextBox x:Name="text_lastWorkPlace"        Style="{StaticResource TextBox_1 }" MaxLength="150" Grid.Column="4"  Grid.Row="1" />
+        <TextBox x:Name="text_lastWorkPosition"     Style="{StaticResource TextBox_1 }" MaxLength="150" Grid.Column="4"  Grid.Row="2" />
+        <DatePicker x:Name="DatePicker_Dismissal"    Grid.Row="3" Grid.Column="4" Margin="3,3,10,3"></DatePicker>
+        <TextBox x:Name="text_DismissalReason"     Style="{StaticResource TextBox_1 }" MaxLength="150" Grid.Column="4"  Grid.Row="4" />
+        <StackPanel Grid.Row="5" Grid.Column="4"  Orientation="Horizontal">
+            <TextBox x:Name="text_expD" Width="25" Style="{StaticResource TextBox_1 }" Margin="5,7,5,4"/>
+            <TextBlock Style="{StaticResource Text_1 }" Text="днiв" />
+            <TextBox x:Name="text_expM" Width="35" Style="{StaticResource TextBox_1 }" Margin="5,7,5,4"/>
+            <TextBlock Style="{StaticResource Text_1 }" Text="мiсяцiв" />
+            <TextBox x:Name="text_expY" Width="35" Style="{StaticResource TextBox_1 }" Margin="5,7,5,4"/>
+            <TextBlock Style="{StaticResource Text_1 }" Text="рокiв" />
+        </StackPanel>
+        <TextBox x:Name="text_Pension" Style="{StaticResource TextBox_1 }" Grid.Column="4" MaxLength="25" Grid.Row="6" />
+        <ComboBox x:Name="Combo_FamilyStatus" Grid.Row="7" Grid.Column="4" Margin="5,5,109,5"/>
+        <Button x:Name="btn_create" Click="btn_create_Click" Grid.Column="5" Grid.Row="10" Margin="154,15,15,15">
+            CREATE
+        </Button>
+    </Grid>
+</Window>
