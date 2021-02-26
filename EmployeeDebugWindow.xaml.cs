@@ -24,6 +24,7 @@ namespace Human_Resources_Department
     {
         Window org = null;
         public Action onClosed;
+        SqlConnection connection = new SqlConnection(new Settings().BDConnectionString);
         public EmployeeDebugWindow()
         {
             InitializeComponent();
@@ -36,17 +37,9 @@ namespace Human_Resources_Department
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SqlConnection con = new SqlConnection();
-            con.ConnectionString = new Settings().BDConnectionString;
-            con.Open();
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = "select * from [table]";
-            cmd.Connection = con;
-            SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd);
-            DataTable data = new DataTable("Users");
-            dataAdapter.Fill(data);
-            debug_grid.ItemsSource = data.DefaultView;
-            con.Close();
+            DBHelper.LoadTalbe(connection,"[Table]", debug_grid);
+            DBHelper.LoadTalbe(connection,"[Educations]", educations_grid);
+            DBHelper.LoadTalbe(connection, "[Family]", family_grid);
         }
     }
 }

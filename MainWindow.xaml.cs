@@ -81,6 +81,7 @@ namespace Human_Resources_Department
         {
             NewEmployeeWindow newEmployeeWindow = new NewEmployeeWindow();
             newEmployeeWindow.ShowDialog();
+            UpdateMainGrid();
         }
 
         private void Window_Main_Closing(object sender, System.ComponentModel.CancelEventArgs e)

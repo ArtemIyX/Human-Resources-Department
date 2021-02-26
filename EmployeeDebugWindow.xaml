@@ -9,11 +9,16 @@
         Closed="Window_Closed"
         Loaded="Window_Loaded">
     <Grid>
-        <DataGrid x:Name="debug_grid">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Surname" Binding="{Binding Surname}"></DataGridTextColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="244*"/>
+            <RowDefinition Height="175*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="245*"/>
+            <ColumnDefinition Width="151*"/>
+        </Grid.ColumnDefinitions>
+        <DataGrid x:Name="debug_grid" ></DataGrid>
+        <DataGrid x:Name="educations_grid" Grid.Column="1"></DataGrid>
+        <DataGrid x:Name="family_grid" Grid.Column="1" Grid.Row="1"></DataGrid>
     </Grid>
 </Window>

@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:Human_Resources_Department"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <BitmapImage x:Key="default_avatar" UriSource="assets\default_avatar.jpg"></BitmapImage>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

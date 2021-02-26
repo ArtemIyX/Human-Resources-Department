@@ -20,3 +20,6 @@ C:\Users\admin\source\repos\Human Resources Department\obj\Debug\EmployeeDebugWi
 C:\Users\admin\source\repos\Human Resources Department\bin\Debug\BD.mdf
 C:\Users\admin\source\repos\Human Resources Department\bin\Debug\BD_log.ldf
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\Human Resources Department_Content.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\App.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\EditFamilyWindow.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\EditFamilyWindow.baml
