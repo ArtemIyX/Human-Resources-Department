@@ -121,34 +121,5 @@ namespace Human_Resources_Department
             }
         }
     }
-    public class FamilyMember
-    {
-        public FamilyMember(string status, string pib, int year)
-        {
-            this.status = status;
-            this.pib = pib;
-            this.year = year;
-        }
-        public FamilyMember(FamilyMember member)
-        {
-            this.status = member.status;
-            this.pib = member.pib;
-            this.year = member.year;
-        }
-
-        public FamilyMember(object obj)
-        {
-            FamilyMember member = obj as FamilyMember;
-            if (member != null)
-            {
-                this.status = member.status;
-                this.pib = member.pib;
-                this.year = member.year;
-            }
-        }
-
-        public string status { get; set; }
-        public string pib { get; set; }
-        public int year { get; set; }
-    }
+    
 }

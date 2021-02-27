@@ -42,16 +42,17 @@ namespace Human_Resources_Department
         }
         public static bool CheckIsNumeric(string text, string error)
         {
-            int res = 0;
-            if (int.TryParse(text, out res))
-            {
-                if (res != 0)
-                {
-                    return true;
-                }
-            }
-            MessageBox.Show(error, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
-            return false;
+            //int res = 0;
+            //if (int.TryParse(text, out res))
+            //{
+            //    if (res != 0)
+            //    {
+            //        return true;
+            //    }
+            //}
+            //MessageBox.Show(error, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+            //return false;
+            return true;
         }
         public static void FillCombo(ComboBox box, string[] data)
         {

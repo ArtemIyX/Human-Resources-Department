@@ -74,6 +74,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="EducationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EmployeeDebugWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -100,7 +104,10 @@
     <Compile Include="EditFamilyWindow.xaml.cs">
       <DependentUpon>EditFamilyWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Employee.cs" />
+    <Compile Include="Data.cs" />
+    <Compile Include="EducationWindow.xaml.cs">
+      <DependentUpon>EducationWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EmployeeDebugWindow.xaml.cs">
       <DependentUpon>EmployeeDebugWindow.xaml</DependentUpon>
     </Compile>
@@ -108,12 +115,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MilitaryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="NewEmployeeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MilitaryWindow.xaml.cs">
+      <DependentUpon>MilitaryWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NewEmployeeWindow.xaml.cs">
       <DependentUpon>NewEmployeeWindow.xaml</DependentUpon>
     </Compile>
@@ -186,6 +200,8 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="windows\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

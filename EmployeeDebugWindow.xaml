@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Human_Resources_Department"
         mc:Ignorable="d"
-        Title="EmployeeDebugWindow" Height="450" Width="800"
+        Title="EmployeeDebugWindow" Height="450" Width="1080.5"
         Closed="Window_Closed"
         Loaded="Window_Loaded">
     <Grid>
@@ -14,11 +14,15 @@
             <RowDefinition Height="175*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="245*"/>
-            <ColumnDefinition Width="151*"/>
+            <ColumnDefinition Width="445*"/>
+            <ColumnDefinition Width="319*"/>
+            <ColumnDefinition Width="308*"/>
         </Grid.ColumnDefinitions>
         <DataGrid x:Name="debug_grid" ></DataGrid>
-        <DataGrid x:Name="educations_grid" Grid.Column="1"></DataGrid>
-        <DataGrid x:Name="family_grid" Grid.Column="1" Grid.Row="1"></DataGrid>
+        <DataGrid x:Name="military_grird" Grid.Row="1" ></DataGrid>
+        <DataGrid x:Name="educations_grid" Grid.Column="1" Grid.ColumnSpan="1"></DataGrid>
+        <DataGrid x:Name="family_grid" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1"></DataGrid>
+        <DataGrid x:Name="diploma_grid" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1"></DataGrid>
+        <DataGrid x:Name="profession_grid" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="1"></DataGrid>
     </Grid>
 </Window>

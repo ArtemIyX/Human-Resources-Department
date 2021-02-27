@@ -2,24 +2,28 @@ C:\Users\admin\source\repos\Human Resources Department\bin\Debug\Human Resources
 C:\Users\admin\source\repos\Human Resources Department\bin\Debug\Human Resources Department.exe
 C:\Users\admin\source\repos\Human Resources Department\bin\Debug\Human Resources Department.pdb
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\Human Resources Department.csprojAssemblyReference.cache
-C:\Users\admin\source\repos\Human Resources Department\obj\Debug\MainWindow.g.cs
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\App.g.cs
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\Human Resources Department_MarkupCompile.cache
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\Human Resources Department_MarkupCompile.lref
-C:\Users\admin\source\repos\Human Resources Department\obj\Debug\MainWindow.baml
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\Human Resources Department.g.resources
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\Human_Resources_Department.Properties.Resources.resources
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\Human Resources Department.csproj.GenerateResource.cache
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\Human Resources Department.csproj.CoreCompileInputs.cache
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\Human Resources Department.exe
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\Human Resources Department.pdb
-C:\Users\admin\source\repos\Human Resources Department\obj\Debug\EmployeeDebugWindow.g.cs
-C:\Users\admin\source\repos\Human Resources Department\obj\Debug\NewEmployeeWindow.g.cs
-C:\Users\admin\source\repos\Human Resources Department\obj\Debug\NewEmployeeWindow.baml
-C:\Users\admin\source\repos\Human Resources Department\obj\Debug\EmployeeDebugWindow.baml
 C:\Users\admin\source\repos\Human Resources Department\bin\Debug\BD.mdf
 C:\Users\admin\source\repos\Human Resources Department\bin\Debug\BD_log.ldf
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\Human Resources Department_Content.g.cs
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\App.baml
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\EditFamilyWindow.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\EmployeeDebugWindow.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\MainWindow.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\MilitaryWindow.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\NewEmployeeWindow.g.cs
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\EditFamilyWindow.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\EmployeeDebugWindow.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\MainWindow.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\MilitaryWindow.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\NewEmployeeWindow.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\EducationWindow.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\EducationWindow.baml

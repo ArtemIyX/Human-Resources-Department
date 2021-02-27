@@ -1,4 +1,5 @@
 ﻿using Human_Resources_Department.Properties;
+using Human_Resources_Department.windows;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,11 @@ namespace Human_Resources_Department
     public partial class NewEmployeeWindow : Window
     {
         SqlConnection connection = new SqlConnection(new Settings().BDConnectionString);
-        List<FamilyMember> list = new List<FamilyMember>();
+        List<FamilyMember> FamilyList = new List<FamilyMember>();
+        List<EducationData> EducationList = new List<EducationData>();
+        List<ProfessionData> Professionlist = new List<ProfessionData>();
+        MilitaryData militaryData = new MilitaryData();
+        
         //private string[] Genders = new string[] { "Жiноча", "Чоловiча" };
         //private string[] WorkTypes = new string[] { "За сумiсництвом", "Основна" };
         //private string[] FamilyStatuses = new string[] { "Одружений", "Неодружений", "Замiжня", "Незамiжня", "Розлучений", "Розлучена", "Вдова", "Вдiвець" };
@@ -55,40 +60,40 @@ namespace Human_Resources_Department
         }
         private void btn_create_Click(object sender, RoutedEventArgs e)
         {
-            if (!CannAddThisIID(text_iid.Text)) return;
-            if (!Check(text_iid, "Введiть корректний IIД")) return;
-            if (!Check(text_surname, "Введiть корректне прiзвище")) return;
-            if (!Check(text_name, "Введiть корректне iм'я")) return;
-            if (!Check(text_lastname, "Введiть корректне по батьковi")) return;
-            if (!Check(text_department, "Введiть корректний пiдроздiл")) return;
-            if (!Check(text_position, "Введiть корректну посаду")) return;
-            if (!Check(text_phone, "Введiть корректну телефон")) return;
-            if (!Check(text_citizenship, "Введiть корректне громадянство")) return;
-            if (!Check(text_lastWorkPosition, "Введiть корректне останню посаду")) return;
-            if (!Check(text_lastWorkPlace, "Введiть корректне останнє мiсце роботи")) return;
-            if (!Check(text_DismissalReason, "Введiть корректну причину звiльнення")) return;
-            if (!Check(text_expD, "Введiть кiлькiсть днiв стажу")) return;
-            if (!Check(text_expM, "Введiть кiлькiсть мiсяцiв стажу")) return;
-            if (!Check(text_expY, "Введiть кiлькiсть рокiв стажу")) return;
-            if (!Check(text_Pension, "Введiть вiдомостi про отримання пенсiї")) return;
-            if (!Check(DatePicker_Birthday, "Введiть дату дня народження")) return;
-            if (!Check(DatePicker_Dismissal, "Введiть дату звiльнення")) return;
-            if (!Check(DatePicker_Completion, "Введiть дату заполнення")) return;
-            if (!CheckIsNumeric(text_expD.Text, "Дані про досвід введені некоректно")) return;
-            if (!CheckIsNumeric(text_expM.Text, "Дані про досвід введені некоректно")) return;
-            if (!CheckIsNumeric(text_expY.Text, "Дані про досвід введені некоректно")) return;
-            if (!Check(text_realAdress, "Введiть коректне мiсце фактичного проживання")) return;
-            if (!Check(text_passport, "Введiть коректне Мiсце проживання за державною реєстрацією")) return;
-            if (!Check(text_authority, "Введiть коректне видаництво паспорту")) return;
-            if (!Check(text_passportSerial, "Введiть коректну серiю паспорту")) return;
-            if (!Check(text_passport, "Введiть коректний номер паспорту")) return;
-            if (!Check(DatePicker_PassportDate, "Введiть коректну дату видачi паспорту")) return;
-            if (!Check(text_pictureName, "Виберiть фотографiю")) return;
-            try
-            {
+            //if (!CannAddThisIID(text_iid.Text)) return;
+            //if (!Check(text_iid, "Введiть корректний IIД")) return;
+            //if (!Check(text_surname, "Введiть корректне прiзвище")) return;
+            //if (!Check(text_name, "Введiть корректне iм'я")) return;
+            //if (!Check(text_lastname, "Введiть корректне по батьковi")) return;
+            //if (!Check(text_department, "Введiть корректний пiдроздiл")) return;
+            //if (!Check(text_position, "Введiть корректну посаду")) return;
+            //if (!Check(text_phone, "Введiть корректну телефон")) return;
+            //if (!Check(text_citizenship, "Введiть корректне громадянство")) return;
+            //if (!Check(text_lastWorkPosition, "Введiть корректне останню посаду")) return;
+            //if (!Check(text_lastWorkPlace, "Введiть корректне останнє мiсце роботи")) return;
+            //if (!Check(text_DismissalReason, "Введiть корректну причину звiльнення")) return;
+            //if (!Check(text_expD, "Введiть кiлькiсть днiв стажу")) return;
+            //if (!Check(text_expM, "Введiть кiлькiсть мiсяцiв стажу")) return;
+            //if (!Check(text_expY, "Введiть кiлькiсть рокiв стажу")) return;
+            //if (!Check(text_Pension, "Введiть вiдомостi про отримання пенсiї")) return;
+            //if (!Check(DatePicker_Birthday, "Введiть дату дня народження")) return;
+            //if (!Check(DatePicker_Dismissal, "Введiть дату звiльнення")) return;
+            //if (!Check(DatePicker_Completion, "Введiть дату заполнення")) return;
+            //if (!CheckIsNumeric(text_expD.Text, "Дані про досвід введені некоректно")) return;
+            //if (!CheckIsNumeric(text_expM.Text, "Дані про досвід введені некоректно")) return;
+            //if (!CheckIsNumeric(text_expY.Text, "Дані про досвід введені некоректно")) return;
+            //if (!Check(text_realAdress, "Введiть коректне мiсце фактичного проживання")) return;
+            //if (!Check(text_passport, "Введiть коректне мiсце проживання за державною реєстрацією")) return;
+            //if (!Check(text_authority, "Введiть коректне видаництво паспорту")) return;
+            //if (!Check(text_passportSerial, "Введiть коректну серiю паспорту")) return;
+            //if (!Check(text_passport, "Введiть коректний номер паспорту")) return;
+            //if (!Check(DatePicker_PassportDate, "Введiть коректну дату видачi паспорту")) return;
+            //if (!Check(text_pictureName, "Виберiть фотографiю")) return;
                 Add();
                 DontShowQuitMessage = true;
                 this.Close();
+            try
+            {
             }
             catch (Exception exp)
             {
@@ -124,13 +129,23 @@ namespace Human_Resources_Department
         }
         private void btn_editFamly_Click(object sender, RoutedEventArgs e)
         {
-            EditFamilyWindow familyWindow = new EditFamilyWindow(this.list);
+            EditFamilyWindow familyWindow = new EditFamilyWindow(this.FamilyList);
             familyWindow.ShowDialog();
 
-            this.list = familyWindow.list;
+            this.FamilyList = familyWindow.list;
             FamilyGrid.Items.Clear();
-            foreach (var item in list)
+            foreach (var item in FamilyList)
                 FamilyGrid.Items.Add(item);
+        }
+        private void btn_military_Click(object sender, RoutedEventArgs e)
+        {
+            MilitaryWindow window = new MilitaryWindow(militaryData);
+            window.ShowDialog();
+        }
+        private void btn_editEducation_Click(object sender, RoutedEventArgs e)
+        {
+            EducationWindow window = new EducationWindow(EducationList, Professionlist);
+            window.ShowDialog();
         }
         private void Add()
         {
@@ -214,10 +229,13 @@ namespace Human_Resources_Department
                 connection.Close();
             }
             AddEducations();
-            foreach (var item in list)
-            {
+            foreach (var item in FamilyList)
                 AddFamilyMember(item);
-            }
+            AddMilitaryData(militaryData);
+            foreach (var item in EducationList)
+                AddDiplomaData(item);
+            foreach (var item in Professionlist)
+                AddProfessionData(item);
         }
         private void AddEducations()
         {
@@ -250,6 +268,7 @@ namespace Human_Resources_Department
         }
         private void AddFamilyMember(FamilyMember member)
         {
+            member.Check();
             int id = GetLastIdFromTable(connection, "[Family]");
             connection.Open();
             SqlCommand cmd = new SqlCommand();
@@ -263,7 +282,76 @@ namespace Human_Resources_Department
             cmd.ExecuteNonQuery();
             connection.Close();
         }
-
+        private void AddMilitaryData(MilitaryData data)
+        {
+            data.Check();
+            int id = GetLastIdFromTable(connection, "[Military]");
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "Insert Into [Military] (Id,_Group,Category,Staff,_Rank,Number,Suitability,OfficePassport,OfficeReal,IID) Values (@Id,@g,@c,@Staff,@r,@Number,@Suitability,@OfficePassport,@OfficeReal,@IID)";
+            Dictionary<string, string> ds = new Dictionary<string, string>()
+            {
+                {"@g",data.Group},
+                {"@c",data.Category },
+                {"@Staff",data.Staff },
+                {"@r",data.Rank },
+                {"@Number",data.Number },
+                {"@Suitability",data.Suitability },
+                {"@OfficePassport",data.OfficePassport },
+                {"@OfficeReal",data.OfficeReal },
+                {"@IID",text_iid.Text }
+            };
+            cmd.Parameters.AddWithValue("@Id", id);
+            foreach (var item in ds)
+            {
+                cmd.Parameters.AddWithValue(item.Key, item.Value);
+            }
+            cmd.ExecuteNonQuery();
+            connection.Close();
+        }
+        private void AddDiplomaData(EducationData data) 
+        {
+            data.Check();
+            int id = GetLastIdFromTable(connection, "[Diploma]");
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "Insert Into [Diploma] (Id,UniversityName,DiplomaName,Year,IID) Values (@Id,@UniversityName,@DiplomaName,@Year,@IID)";
+            Dictionary<string, string> ds = new Dictionary<string, string>()
+            {
+                {"@UniversityName",data.UniversityName},
+                {"@DiplomaName",data.DiplomaName },
+                {"@IID",text_iid.Text }
+            };
+            cmd.Parameters.AddWithValue("@Id", id);
+            cmd.Parameters.AddWithValue("@Year", data.Year);
+            foreach (var item in ds)
+                cmd.Parameters.AddWithValue(item.Key, item.Value);
+            cmd.ExecuteNonQuery();
+            connection.Close();
+        }
+        private void AddProfessionData(ProfessionData data)
+        {
+            data.Check();
+            int id = GetLastIdFromTable(connection, "[Profession]");
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "Insert Into [Profession] (Id,Profession,Qualification,StudyForm,IID) Values (@Id,@Profession,@Qualification,@StudyForm,@IID)";
+            Dictionary<string, string> ds = new Dictionary<string, string>()
+            {
+                {"@Profession",data.Profession},
+                {"@Qualification",data.Qualification },
+                {"@StudyForm",data.StudyForm },
+                {"@IID",text_iid.Text }
+            };
+            cmd.Parameters.AddWithValue("@Id", id);
+            foreach (var item in ds)
+                cmd.Parameters.AddWithValue(item.Key, item.Value);
+            cmd.ExecuteNonQuery();
+            connection.Close();
+        }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (!DontShowQuitMessage)
@@ -275,7 +363,7 @@ namespace Human_Resources_Department
 
         private bool CannAddThisIID(string Iiid)
         {
-            if (!DBHelper.CheckIsNumeric(Iiid, "Iндивiдуальний iндефiкацiйний номер повинен складатися тільки з цифр")) return false;
+            //if (!DBHelper.CheckIsNumeric(Iiid, "Iндивiдуальний iденфiкацiйний номер повинен складатися тільки з цифр")) return false;
             connection.Open();
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = connection;
@@ -286,7 +374,7 @@ namespace Human_Resources_Department
             dataAdapter.Fill(data);
             if (data.Rows.Count >= 1)
             {
-                MessageBox.Show("Такий Iндивiдуальний iндефiкацiйний номер вже використовується", "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Такий Iндивiдуальний iденфiкацiйний номер вже використовується", "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
                 connection.Close();
                 return false;
             }
