@@ -88,5 +88,38 @@ namespace Human_Resources_Department
         {
 
         }
+
+        private void button_edit_Click(object sender, RoutedEventArgs e)
+        {
+            string IID = "-1";
+            if(grid_employeers.SelectedItem == null)
+            {
+                MessageBox.Show("Виберiть сотрудника для редагування", "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            Employee employee = grid_employeers.SelectedItem as Employee;
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "Select IID From [Table] Where Name = @name AND Surname = @sur AND Lastname = @last AND Department = @dep AND Position = @pos";
+            Dictionary<string, string> dS = new Dictionary<string, string>()
+            {
+                {"@name",employee.name},
+                {"@sur",employee.surname },
+                {"@last",employee.lastname },
+                {"@dep",employee.department },
+                {"@pos",employee.position }
+            };
+            foreach (var item in dS)
+                cmd.Parameters.AddWithValue(item.Key, item.Value);
+            SqlDataReader dataReader = cmd.ExecuteReader();
+            while (dataReader.Read())
+            {
+                IID = DBHelper.Normalize(dataReader[0].ToString());
+            }
+            connection.Close();
+            NewEmployeeWindow newEmployeeWindow = new NewEmployeeWindow(EWindowMode.Edit,IID);
+            newEmployeeWindow.ShowDialog();
+        }
     }
 }

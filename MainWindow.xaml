@@ -31,7 +31,15 @@
                     HorizontalAlignment="Right" 
                     Width="250" Height="50"
                     Click="button_createNew_Click">
-                button new
+                NEW
+            </Button>
+            <Button x:Name="button_edit"
+                    Margin="0,12,10,10" 
+                    MinHeight="75" 
+                    HorizontalAlignment="Right" 
+                    Width="250" Height="50"
+                    Click="button_edit_Click">
+                EDIT
             </Button>
             <Button x:Name="button_debug" 
                     Margin="0,12,10,10" 

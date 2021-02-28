@@ -30,15 +30,15 @@ namespace Human_Resources_Department
     public partial class NewEmployeeWindow : Window
     {
 
-        EWindowMode WindowMode = EWindowMode.CreateNew;
-        string iid = "-1";
+        private EWindowMode WindowMode = EWindowMode.CreateNew;
+        private string iid = "-1";
 
-        SqlConnection connection = new SqlConnection(new Settings().BDConnectionString);
-        List<FamilyMember> FamilyList = new List<FamilyMember>();
-        List<EducationData> EducationList = new List<EducationData>();
-        List<ProfessionData> Professionlist = new List<ProfessionData>();
-        MilitaryData militaryData = new MilitaryData();
-        List<AppointmentData> AppointmentList = new List<AppointmentData>();
+        private SqlConnection connection = new SqlConnection(new Settings().BDConnectionString);
+        private List<FamilyMember> FamilyList = new List<FamilyMember>();
+        private List<EducationData> EducationList = new List<EducationData>();
+        private List<ProfessionData> Professionlist = new List<ProfessionData>();
+        private MilitaryData militaryData = new MilitaryData();
+        private List<AppointmentData> AppointmentList = new List<AppointmentData>();
         
         //private string[] Genders = new string[] { "Жiноча", "Чоловiча" };
         //private string[] WorkTypes = new string[] { "За сумiсництвом", "Основна" };
@@ -47,26 +47,54 @@ namespace Human_Resources_Department
         public NewEmployeeWindow(EWindowMode mode = EWindowMode.CreateNew, string iid = "-1")
         {
             InitializeComponent();
+            this.WindowMode = mode;
+            this.iid = iid;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            DatePicker_Completion.SelectedDate = DateTime.Today;
-            //employee_image.Source = 
-
-            //Combo_gender.SelectedIndex = 0;
-            //Combo_workType.SelectedIndex = 0;
-            //Combo_FamilyStatus.SelectedIndex = 0;
-            //foreach (var item in Genders)
-            //    Combo_gender.Items.Add(item);
-            //foreach (var item in WorkTypes)
-            //    Combo_workType.Items.Add(item);
-            //foreach (var item in FamilyStatuses)
-            //    Combo_FamilyStatus.Items.Add(item);
             FillCombo(Combo_gender, new string[] { "Жiноча", "Чоловiча" });
             FillCombo(Combo_workType, new string[] { "За сумiсництвом", "Основна" });
             FillCombo(Combo_FamilyStatus, new string[] { "Одружений", "Неодружений", "Замiжня", "Незамiжня", "Розлучений", "Розлучена", "Вдова", "Вдiвець" });
+            if (this.WindowMode == EWindowMode.CreateNew)
+            {
+                DatePicker_Completion.SelectedDate = DateTime.Today;
+                //employee_image.Source = 
+
+                //Combo_gender.SelectedIndex = 0;
+                //Combo_workType.SelectedIndex = 0;
+                //Combo_FamilyStatus.SelectedIndex = 0;
+                //foreach (var item in Genders)
+                //    Combo_gender.Items.Add(item);
+                //foreach (var item in WorkTypes)
+                //    Combo_workType.Items.Add(item);
+                //foreach (var item in FamilyStatuses)
+                //    Combo_FamilyStatus.Items.Add(item);
+            }
+            else if(this.WindowMode == EWindowMode.Edit)
+            {
+                try
+                {
+                    Load();
+                }
+                catch (Exception exp)
+                {
+                    MessageBox.Show(exp.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    this.Close();
+                }
+            }
+
         }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!DontShowQuitMessage)
+            {
+                MessageBoxResult resuult = MessageBox.Show("Ви хочете завершити створення сотрудника?", "Вийти?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                e.Cancel = resuult == MessageBoxResult.No;
+            }
+        }
+
+
         private void btn_create_Click(object sender, RoutedEventArgs e)
         {
             //if (!CannAddThisIID(text_iid.Text)) return;
@@ -179,7 +207,7 @@ namespace Human_Resources_Department
             connection.Open();
             SqlCommand cmd2 = new SqlCommand();
             cmd2.Connection = connection;
-            cmd2.CommandText = "Insert Into [Table] (Id,DateOfCompletion,IsMale,IsMainWork,Department,Position,Surname,Name,Lastname,Birthday,Citizenship,Education,LastWorkPlace,LastWorkPosition,ExperienceD,ExperienceM,ExperienceY,DateOfDismissal,DismissalReason,Pension,FamilyStatus,PassportAdress,RealAdress,PassportSerial,PassportNumber,IssuingAuthority,IID,TelephoneNumber,PassportDate,Picture)  Values (@Id,@DateOfCompletion,@Male,@IsMainWork,@Department,@Position,@Surname,@Name,@Lastname,@Birthday,@Citizenship,@Education,@LastWorkPlace,@LastWorkPosition,@ExperienceD,@ExperienceM,@ExperienceY,@DateOfDismissal,@DismissalReason,@Pension,@FamilyStatus,@PassportAdress,@RealAdress,@PassportSerial,@PassportNumber,@IssuingAuthority,@IID,@TelephoneNumber,@PassportDate,@Image) ";
+            cmd2.CommandText = "Insert Into [Table] (Id,DateOfCompletion,IsMale,IsMainWork,Department,Position,Surname,Name,Lastname,Birthday,Citizenship,LastWorkPlace,LastWorkPosition,ExperienceD,ExperienceM,ExperienceY,DateOfDismissal,DismissalReason,Pension,FamilyStatus,PassportAdress,RealAdress,PassportSerial,PassportNumber,IssuingAuthority,IID,TelephoneNumber,PassportDate,Picture)  Values (@Id,@DateOfCompletion,@Male,@IsMainWork,@Department,@Position,@Surname,@Name,@Lastname,@Birthday,@Citizenship,@LastWorkPlace,@LastWorkPosition,@ExperienceD,@ExperienceM,@ExperienceY,@DateOfDismissal,@DismissalReason,@Pension,@FamilyStatus,@PassportAdress,@RealAdress,@PassportSerial,@PassportNumber,@IssuingAuthority,@IID,@TelephoneNumber,@PassportDate,@Image) ";
             //Data
             Dictionary<string, string> dS = new Dictionary<string, string>()
             {
@@ -189,7 +217,6 @@ namespace Human_Resources_Department
                 {"@Lastname", text_lastname.Text },
                 {"@Name",text_name.Text },
                 {"@Citizenship",text_citizenship.Text },
-                {"@Education","Temp Education" },
                 {"@LastWorkPlace", text_lastWorkPlace.Text },
                 {"@LastWorkPosition", text_lastWorkPosition.Text },
                 {"@DismissalReason",text_DismissalReason.Text },
@@ -393,14 +420,6 @@ namespace Human_Resources_Department
             cmd.ExecuteNonQuery();
             connection.Close();
         }
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (!DontShowQuitMessage)
-            {
-                MessageBoxResult resuult = MessageBox.Show("Ви хочете завершити створення сотрудника?", "Вийти?", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                e.Cancel = resuult == MessageBoxResult.No;
-            }
-        }
 
         private bool CannAddThisIID(string Iiid)
         {   
@@ -431,6 +450,100 @@ namespace Human_Resources_Department
             return img;
         }
 
-
+        private void Load()
+        {
+            text_iid.Text = this.iid;
+            LoadMain();
+        }
+        private void LoadMain()
+        {
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "Select * From [Table] Where IID = @IID";
+            cmd.Parameters.AddWithValue("@IID", this.iid);
+            try 
+            {
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.HasRows)
+                {
+                    while (dataReader.Read())
+                    {
+                        try
+                        {
+                            DatePicker_Completion.SelectedDate = DateTime.Parse(dataReader[1].ToString());
+                        }
+                        catch (Exception exp)
+                        {
+                            MessageBox.Show(exp.Message, "Попередження", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                        Combo_gender.SelectedIndex = Convert.ToInt32(Convert.ToBoolean(dataReader[2]));
+                        Combo_workType.SelectedIndex = Convert.ToInt32(Convert.ToBoolean(dataReader[3]));
+                        text_department.Text = dataReader[4].ToString();
+                        text_position.Text = dataReader[5].ToString();
+                        text_surname.Text = dataReader[6].ToString();
+                        text_name.Text = dataReader[7].ToString();
+                        text_lastname.Text = dataReader[8].ToString();
+                        try
+                        {
+                            DatePicker_Birthday.SelectedDate = DateTime.Parse(dataReader[9].ToString());
+                        }
+                        catch (Exception exp)
+                        {
+                            MessageBox.Show(exp.Message, "Попередження", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                        text_citizenship.Text = dataReader[10].ToString();
+                        text_lastWorkPlace.Text = dataReader[11].ToString();
+                        text_lastWorkPosition.Text = dataReader[12].ToString();
+                        text_expD.Text = dataReader[13].ToString();
+                        text_expM.Text = dataReader[14].ToString();
+                        text_expY.Text = dataReader[15].ToString();
+                        try
+                        {
+                            DatePicker_Dismissal.SelectedDate = DateTime.Parse(dataReader[16].ToString());
+                        }
+                        catch (Exception exp)
+                        {
+                            MessageBox.Show(exp.Message, "Попередження", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                        text_DismissalReason.Text = dataReader[17].ToString();
+                        text_Pension.Text = dataReader[18].ToString();
+                        Combo_FamilyStatus.SelectedItem = dataReader[19].ToString();
+                        text_passportAdress.Text = dataReader[20].ToString();
+                        text_realAdress.Text = dataReader[21].ToString();
+                        text_passportSerial.Text = dataReader[22].ToString();
+                        text_passport.Text = dataReader[23].ToString();
+                        text_authority.Text = dataReader[24].ToString();
+                        //iid = dataReader[25].Tostring();
+                        text_phone.Text = dataReader[26].ToString();
+                        try
+                        {
+                            DatePicker_PassportDate.SelectedDate = DateTime.Parse(dataReader[27].ToString());
+                        }
+                        catch (Exception exp)
+                        {
+                            MessageBox.Show(exp.Message, "Попередження", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                        byte[] img = (byte[])(dataReader[28]);
+                        if (img == null)
+                        {
+                            MessageBox.Show("Не знайдено зображення сотрудника", "Попередження", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                        else
+                        {
+                            MemoryStream ms = new MemoryStream(img);
+                            employee_image.Source = BitmapFrame.Create(ms, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                        }
+                    }
+                }
+            }
+            catch(Exception exp)
+            {
+                MessageBox.Show(exp.Message);
+                return;
+                //throw new Exception($"Сотрудника з IID {iid} не знайдено");
+            }
+            connection.Close();
+        }
     }
 }

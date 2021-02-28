@@ -79,5 +79,17 @@ namespace Human_Resources_Department
             }
             return true;
         }
+
+        public static string Normalize(string str)
+        {
+            var a = str.Last(x => x != ' ');
+            var b = str.LastIndexOf(a);
+            StringBuilder sb = new StringBuilder();
+            for(int i = 0; i <= b; ++i)
+            {
+                sb.Append(str[i]);
+            }
+            return sb.ToString();
+        }
     }
 }
