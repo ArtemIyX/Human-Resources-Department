@@ -27,3 +27,5 @@ C:\Users\admin\source\repos\Human Resources Department\obj\Debug\MilitaryWindow.
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\NewEmployeeWindow.baml
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\EducationWindow.g.cs
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\EducationWindow.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\AppointmentWindow.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\AppointmentWindow.baml

@@ -20,22 +20,31 @@ using System.Windows.Shapes;
 using static Human_Resources_Department.DBHelper;
 namespace Human_Resources_Department
 {
-    /// <summary>
-    /// Логика взаимодействия для NewEmployeeWindow.xaml
-    /// </summary>
+
+    public enum EWindowMode
+    {
+        CreateNew,
+        Edit
+    }
+
     public partial class NewEmployeeWindow : Window
     {
+
+        EWindowMode WindowMode = EWindowMode.CreateNew;
+        string iid = "-1";
+
         SqlConnection connection = new SqlConnection(new Settings().BDConnectionString);
         List<FamilyMember> FamilyList = new List<FamilyMember>();
         List<EducationData> EducationList = new List<EducationData>();
         List<ProfessionData> Professionlist = new List<ProfessionData>();
         MilitaryData militaryData = new MilitaryData();
+        List<AppointmentData> AppointmentList = new List<AppointmentData>();
         
         //private string[] Genders = new string[] { "Жiноча", "Чоловiча" };
         //private string[] WorkTypes = new string[] { "За сумiсництвом", "Основна" };
         //private string[] FamilyStatuses = new string[] { "Одружений", "Неодружений", "Замiжня", "Незамiжня", "Розлучений", "Розлучена", "Вдова", "Вдiвець" };
         private bool DontShowQuitMessage = false;
-        public NewEmployeeWindow()
+        public NewEmployeeWindow(EWindowMode mode = EWindowMode.CreateNew, string iid = "-1")
         {
             InitializeComponent();
         }
@@ -147,6 +156,11 @@ namespace Human_Resources_Department
             EducationWindow window = new EducationWindow(EducationList, Professionlist);
             window.ShowDialog();
         }
+        private void btn_appointment_Click(object sender, RoutedEventArgs e)
+        {
+            AppointmentWindow window = new AppointmentWindow(AppointmentList);
+            window.ShowDialog();
+        }
         private void Add()
         {
             //Get last id from id
@@ -236,7 +250,10 @@ namespace Human_Resources_Department
                 AddDiplomaData(item);
             foreach (var item in Professionlist)
                 AddProfessionData(item);
+            foreach (var item in AppointmentList)
+                AddApointmentData(item);
         }
+
         private void AddEducations()
         {
             Dictionary<string, bool> dB = new Dictionary<string, bool>()
@@ -352,6 +369,30 @@ namespace Human_Resources_Department
             cmd.ExecuteNonQuery();
             connection.Close();
         }
+        private void AddApointmentData(AppointmentData data)
+        {
+            data.Check();
+            int id = GetLastIdFromTable(connection, "[Appointment]");
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "Insert Into [Appointment] (Id,AppointmentDate,Department,Position,Code,Salary,Reason,IID) Values (@Id,@Date,@Department,@Position,@Code,@Salary,@Reason,@IID)";
+            Dictionary<string, string> ds = new Dictionary<string, string>()
+            {
+                {"@Department",data.Department},
+                {"@Position",data.Position },
+                {"@Code",data.Code },
+                {"@Reason",data.Reason },
+                {"@IID",text_iid.Text }
+            };
+            cmd.Parameters.AddWithValue("@Id", id);
+            cmd.Parameters.AddWithValue("@Salary", data.Salary);
+            cmd.Parameters.AddWithValue("@Date", DateTime.Parse(data.Date)); //Опасный код
+            foreach (var item in ds)
+                cmd.Parameters.AddWithValue(item.Key, item.Value);
+            cmd.ExecuteNonQuery();
+            connection.Close();
+        }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (!DontShowQuitMessage)
@@ -362,7 +403,7 @@ namespace Human_Resources_Department
         }
 
         private bool CannAddThisIID(string Iiid)
-        {
+        {   
             //if (!DBHelper.CheckIsNumeric(Iiid, "Iндивiдуальний iденфiкацiйний номер повинен складатися тільки з цифр")) return false;
             connection.Open();
             SqlCommand cmd = new SqlCommand();

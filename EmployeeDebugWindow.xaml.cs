@@ -43,6 +43,7 @@ namespace Human_Resources_Department
             DBHelper.LoadTalbe(connection, "[Military]", military_grird);
             DBHelper.LoadTalbe(connection, "[Profession]", profession_grid);
             DBHelper.LoadTalbe(connection, "[Diploma]", diploma_grid);
+            DBHelper.LoadTalbe(connection, "[Appointment]", appoint_grid);
         }
     }
 }

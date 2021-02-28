@@ -207,4 +207,59 @@ namespace Human_Resources_Department
             if (string.IsNullOrEmpty(StudyForm)) StudyForm = "-";
         }
     }
+    public class AppointmentData : DATA
+    {
+
+        public AppointmentData(string Date, string Department, string Position, string Code, decimal Salary, string Reason)
+        {
+            this.Date = Date;
+            this.Department = Department;
+            this.Position = Position;
+            this.Code = Code;
+            this.Salary = Salary;
+            this.Reason = Reason;
+        }
+        public AppointmentData(AppointmentData Data)
+        {
+            this.Date = Data.Date;
+            this.Department = Data.Department;
+            this.Position = Data.Position;
+            this.Code = Data.Code;
+            this.Salary = Data.Salary;
+            this.Reason = Data.Reason;
+        }
+        public AppointmentData(Object obj)
+        {
+            AppointmentData Data = obj as AppointmentData;
+            if(Data != null)
+            {
+                this.Date = Data.Date;
+                this.Department = Data.Department;
+                this.Position = Data.Position;
+                this.Code = Data.Code;
+                this.Salary = Data.Salary;
+                this.Reason = Data.Reason;
+            }
+        }
+        public AppointmentData()
+        {
+
+        }
+
+        public string Date { get; set; }
+        public string Department { get; set; }
+        public string Position { get; set; }
+        public string Code { get; set; }
+        public decimal Salary { get; set; }
+        public string Reason { get; set; }
+
+        public override void Check()
+        {
+            if (string.IsNullOrEmpty(Date)) Date = DateTime.Today.ToShortDateString();
+            if (string.IsNullOrEmpty(Department)) Department = "-";
+            if (string.IsNullOrEmpty(Position)) Position = "-";
+            if (string.IsNullOrEmpty(Code)) Code = "-";
+            if (string.IsNullOrEmpty(Reason)) Reason = "-";
+        }
+    }
 }

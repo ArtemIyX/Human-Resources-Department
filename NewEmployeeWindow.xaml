@@ -120,10 +120,12 @@
             <Button x:Name="btn_military" Click="btn_military_Click" Margin="5">
                 EDIT MILITARY
             </Button>
+            <Button x:Name="btn_appointment" Click="btn_appointment_Click" Margin="5">
+                EDIT Appointment
+            </Button>
             <Button x:Name="btn_create" Click="btn_create_Click" Margin="5">
                 CREATE
             </Button>
-
         </StackPanel>
         <TextBlock Grid.Row="0" Grid.Column="4"  Text="Освiта" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="24" Margin="5,0,0,5" Height="32" Width="70" />
         <Viewbox Grid.Row="1" Grid.Column="4" HorizontalAlignment="Left" Width="293">

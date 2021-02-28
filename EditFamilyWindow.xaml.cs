@@ -31,17 +31,7 @@ namespace Human_Resources_Department
             RefreshGrid();
             DBHelper.FillCombo(combo_status, new string[] { "Чоловiк", "Дружина", "Син", "Донька" });
         }
-        private void RefreshGrid()
-        {
-            this.FamilyGrid.Items.Clear();
-            if (list != null)
-            {
-                foreach (var item in list)
-                {
-                    this.FamilyGrid.Items.Add(item);
-                }
-            }
-        }
+
 
         private void btn_add_Click(object sender, RoutedEventArgs e)
         {
@@ -93,19 +83,6 @@ namespace Human_Resources_Department
             RefreshGrid();
             Reset();
         }
-        private bool Check()
-        {
-            if (!DBHelper.Check(text_pib, "Введiть корректний ПIБ")) return false;
-            if (!DBHelper.Check(text_year, "Введiть корректний рiк народження")) return false;
-            if (!DBHelper.CheckIsNumeric(text_year.Text, "Введiть корректний рiк народження")) return false;
-            return true;
-        }
-        private void Reset()
-        {
-            text_pib.Text = string.Empty;
-            text_year.Text = string.Empty;
-            combo_status.SelectedIndex = 0;
-        }
 
         private void FamilyGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
@@ -119,6 +96,30 @@ namespace Human_Resources_Department
                 else combo_status.SelectedIndex = id;
                 text_year.Text = obj.year.ToString();
             }
+        }
+        private void RefreshGrid()
+        {
+            this.FamilyGrid.Items.Clear();
+            if (list != null)
+            {
+                foreach (var item in list)
+                {
+                    this.FamilyGrid.Items.Add(item);
+                }
+            }
+        }
+        private bool Check()
+        {
+            if (!DBHelper.Check(text_pib, "Введiть корректний ПIБ")) return false;
+            if (!DBHelper.Check(text_year, "Введiть корректний рiк народження")) return false;
+            // if (!DBHelper.CheckIsNumeric(text_year.Text, "Введiть корректний рiк народження")) return false;
+            return true;
+        }
+        private void Reset()
+        {
+            text_pib.Text = string.Empty;
+            text_year.Text = string.Empty;
+            combo_status.SelectedIndex = 0;
         }
     }
     
