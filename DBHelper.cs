@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Human_Resources_Department
 {
@@ -38,6 +41,16 @@ namespace Human_Resources_Department
             DataTable data = new DataTable(tableName);
             dataAdapter.Fill(data);
             gridToFill.ItemsSource = data.DefaultView;
+            connection.Close();
+        }
+        public static void ClearTable(SqlConnection connection, string tableName, string iid)
+        {
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = $"delete from {tableName} where IID = @IID";
+            cmd.Connection = connection;
+            cmd.Parameters.AddWithValue("@IID", iid);
+            cmd.ExecuteNonQuery();
             connection.Close();
         }
         public static bool CheckIsNumeric(string text, string error)
@@ -90,6 +103,14 @@ namespace Human_Resources_Department
                 sb.Append(str[i]);
             }
             return sb.ToString();
+        }
+        public static byte[] getJPGFromImageControl(BitmapImage imageC)
+        {
+            MemoryStream memStream = new MemoryStream();
+            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(imageC));
+            encoder.Save(memStream);
+            return memStream.ToArray();
         }
     }
 }

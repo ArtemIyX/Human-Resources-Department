@@ -32,14 +32,14 @@ namespace Human_Resources_Department
 
         private EWindowMode WindowMode = EWindowMode.CreateNew;
         private string iid = "-1";
-
+        private byte[] ImageBytes = null;
         private SqlConnection connection = new SqlConnection(new Settings().BDConnectionString);
         private List<FamilyMember> FamilyList = new List<FamilyMember>();
         private List<EducationData> EducationList = new List<EducationData>();
         private List<ProfessionData> Professionlist = new List<ProfessionData>();
         private MilitaryData militaryData = new MilitaryData();
         private List<AppointmentData> AppointmentList = new List<AppointmentData>();
-        
+
         //private string[] Genders = new string[] { "Жiноча", "Чоловiча" };
         //private string[] WorkTypes = new string[] { "За сумiсництвом", "Основна" };
         //private string[] FamilyStatuses = new string[] { "Одружений", "Неодружений", "Замiжня", "Незамiжня", "Розлучений", "Розлучена", "Вдова", "Вдiвець" };
@@ -71,7 +71,7 @@ namespace Human_Resources_Department
                 //foreach (var item in FamilyStatuses)
                 //    Combo_FamilyStatus.Items.Add(item);
             }
-            else if(this.WindowMode == EWindowMode.Edit)
+            else if (this.WindowMode == EWindowMode.Edit)
             {
                 try
                 {
@@ -80,6 +80,7 @@ namespace Human_Resources_Department
                 catch (Exception exp)
                 {
                     MessageBox.Show(exp.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    DontShowQuitMessage = true;
                     this.Close();
                 }
             }
@@ -126,20 +127,41 @@ namespace Human_Resources_Department
             //if (!Check(text_passport, "Введiть коректний номер паспорту")) return;
             //if (!Check(DatePicker_PassportDate, "Введiть коректну дату видачi паспорту")) return;
             //if (!Check(text_pictureName, "Виберiть фотографiю")) return;
-                Add();
-                DontShowQuitMessage = true;
-                this.Close();
-            try
+            if (this.WindowMode == EWindowMode.CreateNew)
             {
+                try
+                {
+                    Add();
+                    DontShowQuitMessage = true;
+                    this.Close();
+                }
+                catch (Exception exp)
+                {
+                    MessageBox.Show(exp.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    if (connection.State != System.Data.ConnectionState.Closed)
+                        connection.Close();
+                }
             }
-            catch (Exception exp)
+            else if (this.WindowMode == EWindowMode.Edit)
             {
-                MessageBox.Show(exp.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                if (connection.State != System.Data.ConnectionState.Closed)
-                    connection.Close();
+                try
+                {
+                    Edit();
+                    DontShowQuitMessage = true;
+                    this.Close();
+                }
+                catch (Exception exp)
+                {
+                    MessageBox.Show(exp.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    if (connection.State != System.Data.ConnectionState.Closed)
+                        connection.Close();
+                }
             }
         }
         private void btn_selectPicture_Click(object sender, RoutedEventArgs e)
@@ -170,9 +192,7 @@ namespace Human_Resources_Department
             familyWindow.ShowDialog();
 
             this.FamilyList = familyWindow.list;
-            FamilyGrid.Items.Clear();
-            foreach (var item in FamilyList)
-                FamilyGrid.Items.Add(item);
+            RefreshFamilyGrid();
         }
         private void btn_military_Click(object sender, RoutedEventArgs e)
         {
@@ -189,6 +209,13 @@ namespace Human_Resources_Department
             AppointmentWindow window = new AppointmentWindow(AppointmentList);
             window.ShowDialog();
         }
+
+        private void RefreshFamilyGrid()
+        {
+            FamilyGrid.Items.Clear();
+            foreach (var item in FamilyList)
+                FamilyGrid.Items.Add(item);
+        }
         private void Add()
         {
             //Get last id from id
@@ -198,7 +225,7 @@ namespace Human_Resources_Department
             {
                 img = GetImageFromLoc(text_pictureName.Text);
             }
-            catch(Exception exp)
+            catch (Exception exp)
             {
                 MessageBox.Show(exp.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -270,17 +297,18 @@ namespace Human_Resources_Department
                 connection.Close();
             }
             AddEducations();
+            AddMilitaryData(militaryData);
+
             foreach (var item in FamilyList)
                 AddFamilyMember(item);
-            AddMilitaryData(militaryData);
             foreach (var item in EducationList)
                 AddDiplomaData(item);
             foreach (var item in Professionlist)
                 AddProfessionData(item);
             foreach (var item in AppointmentList)
                 AddApointmentData(item);
-        }
 
+        }
         private void AddEducations()
         {
             Dictionary<string, bool> dB = new Dictionary<string, bool>()
@@ -318,8 +346,8 @@ namespace Human_Resources_Department
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = connection;
             cmd.CommandText = "Insert Into [Family] (Id,status,pib,year,IID) Values (@Id,@status,@pib,@year,@IID)";
-            cmd.Parameters.AddWithValue("@Id",id);
-            cmd.Parameters.AddWithValue("@status",member.status);
+            cmd.Parameters.AddWithValue("@Id", id);
+            cmd.Parameters.AddWithValue("@status", member.status);
             cmd.Parameters.AddWithValue("@pib", member.pib);
             cmd.Parameters.AddWithValue("@year", member.year);
             cmd.Parameters.AddWithValue("@IID", text_iid.Text);
@@ -354,7 +382,7 @@ namespace Human_Resources_Department
             cmd.ExecuteNonQuery();
             connection.Close();
         }
-        private void AddDiplomaData(EducationData data) 
+        private void AddDiplomaData(EducationData data)
         {
             data.Check();
             int id = GetLastIdFromTable(connection, "[Diploma]");
@@ -422,7 +450,7 @@ namespace Human_Resources_Department
         }
 
         private bool CannAddThisIID(string Iiid)
-        {   
+        {
             //if (!DBHelper.CheckIsNumeric(Iiid, "Iндивiдуальний iденфiкацiйний номер повинен складатися тільки з цифр")) return false;
             connection.Open();
             SqlCommand cmd = new SqlCommand();
@@ -452,8 +480,17 @@ namespace Human_Resources_Department
 
         private void Load()
         {
-            text_iid.Text = this.iid;
             LoadMain();
+            LoadEducations();
+            LoadFamily();
+            LoadMilitary();
+            LoadDiploma();
+            LoadProfession();
+            LoadAppointment();
+
+            text_iid.Text = this.iid;
+            text_iid.IsReadOnly = true;
+            RefreshFamilyGrid();
         }
         private void LoadMain()
         {
@@ -462,7 +499,7 @@ namespace Human_Resources_Department
             cmd.Connection = connection;
             cmd.CommandText = "Select * From [Table] Where IID = @IID";
             cmd.Parameters.AddWithValue("@IID", this.iid);
-            try 
+            try
             {
                 SqlDataReader dataReader = cmd.ExecuteReader();
                 if (dataReader.HasRows)
@@ -479,71 +516,352 @@ namespace Human_Resources_Department
                         }
                         Combo_gender.SelectedIndex = Convert.ToInt32(Convert.ToBoolean(dataReader[2]));
                         Combo_workType.SelectedIndex = Convert.ToInt32(Convert.ToBoolean(dataReader[3]));
-                        text_department.Text = dataReader[4].ToString();
-                        text_position.Text = dataReader[5].ToString();
-                        text_surname.Text = dataReader[6].ToString();
-                        text_name.Text = dataReader[7].ToString();
-                        text_lastname.Text = dataReader[8].ToString();
+                        text_department.Text = Normalize(dataReader[4].ToString());
+                        text_position.Text = Normalize(dataReader[5].ToString());
+                        text_surname.Text = Normalize(dataReader[6].ToString());
+                        text_name.Text = Normalize(dataReader[7].ToString());
+                        text_lastname.Text = Normalize(dataReader[8].ToString());
                         try
                         {
-                            DatePicker_Birthday.SelectedDate = DateTime.Parse(dataReader[9].ToString());
+                            DatePicker_Birthday.SelectedDate = Convert.ToDateTime(dataReader[9]);
                         }
                         catch (Exception exp)
                         {
                             MessageBox.Show(exp.Message, "Попередження", MessageBoxButton.OK, MessageBoxImage.Warning);
                         }
-                        text_citizenship.Text = dataReader[10].ToString();
-                        text_lastWorkPlace.Text = dataReader[11].ToString();
-                        text_lastWorkPosition.Text = dataReader[12].ToString();
-                        text_expD.Text = dataReader[13].ToString();
-                        text_expM.Text = dataReader[14].ToString();
-                        text_expY.Text = dataReader[15].ToString();
+                        text_citizenship.Text = Normalize(dataReader[10].ToString());
+                        text_lastWorkPlace.Text = Normalize(dataReader[11].ToString());
+                        text_lastWorkPosition.Text = Normalize(dataReader[12].ToString());
+                        text_expD.Text = Normalize(dataReader[13].ToString());
+                        text_expM.Text = Normalize(dataReader[14].ToString());
+                        text_expY.Text = Normalize(dataReader[15].ToString());
                         try
                         {
-                            DatePicker_Dismissal.SelectedDate = DateTime.Parse(dataReader[16].ToString());
+                            DatePicker_Dismissal.SelectedDate = Convert.ToDateTime(dataReader[16]);
                         }
                         catch (Exception exp)
                         {
                             MessageBox.Show(exp.Message, "Попередження", MessageBoxButton.OK, MessageBoxImage.Warning);
                         }
-                        text_DismissalReason.Text = dataReader[17].ToString();
-                        text_Pension.Text = dataReader[18].ToString();
-                        Combo_FamilyStatus.SelectedItem = dataReader[19].ToString();
-                        text_passportAdress.Text = dataReader[20].ToString();
-                        text_realAdress.Text = dataReader[21].ToString();
-                        text_passportSerial.Text = dataReader[22].ToString();
-                        text_passport.Text = dataReader[23].ToString();
-                        text_authority.Text = dataReader[24].ToString();
+                        text_DismissalReason.Text = Normalize(dataReader[17].ToString());
+                        text_Pension.Text = Normalize(dataReader[18].ToString());
+                        Combo_FamilyStatus.SelectedItem = Normalize(dataReader[19].ToString());
+                        text_passportAdress.Text = Normalize(dataReader[20].ToString());
+                        text_realAdress.Text = Normalize(dataReader[21].ToString());
+                        text_passportSerial.Text = Normalize(dataReader[22].ToString());
+                        text_passport.Text = Normalize(dataReader[23].ToString());
+                        text_authority.Text = Normalize(dataReader[24].ToString());
                         //iid = dataReader[25].Tostring();
-                        text_phone.Text = dataReader[26].ToString();
+                        text_phone.Text = Normalize(dataReader[26].ToString());
                         try
                         {
-                            DatePicker_PassportDate.SelectedDate = DateTime.Parse(dataReader[27].ToString());
+                            DatePicker_PassportDate.SelectedDate = Convert.ToDateTime(dataReader[27]);
                         }
                         catch (Exception exp)
                         {
                             MessageBox.Show(exp.Message, "Попередження", MessageBoxButton.OK, MessageBoxImage.Warning);
                         }
-                        byte[] img = (byte[])(dataReader[28]);
-                        if (img == null)
+                        try
                         {
-                            MessageBox.Show("Не знайдено зображення сотрудника", "Попередження", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        }
-                        else
-                        {
+                            byte[] img = (byte[])(dataReader[28]);
                             MemoryStream ms = new MemoryStream(img);
                             employee_image.Source = BitmapFrame.Create(ms, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                            ImageBytes = img;
+                        }
+                        catch (Exception exp)
+                        {
+                            MessageBox.Show("Не знайдено зображення сотрудника", "Попередження", MessageBoxButton.OK, MessageBoxImage.Warning);
                         }
                     }
                 }
             }
-            catch(Exception exp)
+            catch (Exception exp)
             {
                 MessageBox.Show(exp.Message);
+                connection.Close();
                 return;
                 //throw new Exception($"Сотрудника з IID {iid} не знайдено");
             }
             connection.Close();
+        }
+        private void LoadEducations()
+        {
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "Select * From [Educations] Where IID = @IID";
+            cmd.Parameters.AddWithValue("@IID", this.iid);
+            SqlDataReader dataReader = cmd.ExecuteReader();
+            if (dataReader.HasRows)
+            {
+                while (dataReader.Read())
+                {
+                    //var id = dataReader[0];
+                    //var iid = dataReader[1];
+                    CheckBox[] checkBoxes = new CheckBox[] { check_educationA, check_educationB, check_educationC, check_educationD, check_educationE, check_educationF };
+                    for (int i = 0; i < checkBoxes.Length; ++i)
+                    {
+                        checkBoxes[i].IsChecked = Convert.ToBoolean(dataReader[i + 2]);
+                    }
+                }
+            }
+            connection.Close();
+        }
+        private void LoadFamily()
+        {
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "Select * From [Family] Where IID = @IID";
+            cmd.Parameters.AddWithValue("@IID", this.iid);
+            SqlDataReader dataReader = cmd.ExecuteReader();
+            if (dataReader.HasRows)
+            {
+                FamilyList.Clear();
+                while (dataReader.Read())
+                {
+                    FamilyMember member = new FamilyMember();
+                    member.status = Normalize(dataReader[1].ToString());
+                    member.pib = Normalize(dataReader[2].ToString());
+                    member.year = Convert.ToInt32(dataReader[3]);
+                    FamilyList.Add(member);
+                }
+            }
+            connection.Close();
+        }
+        private void LoadMilitary()
+        {
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "Select * From [Military] Where IID = @IID";
+            cmd.Parameters.AddWithValue("@IID", this.iid);
+            SqlDataReader dataReader = cmd.ExecuteReader();
+            if (dataReader.HasRows)
+            {
+                while (dataReader.Read())
+                {
+                    militaryData.Group = Normalize(dataReader[1].ToString());
+                    militaryData.Category = Normalize(dataReader[2].ToString());
+                    militaryData.Staff = Normalize(dataReader[3].ToString());
+                    militaryData.Rank = Normalize(dataReader[4].ToString());
+                    militaryData.Number = Normalize(dataReader[5].ToString());
+                    militaryData.Suitability = Normalize(dataReader[6].ToString());
+                    militaryData.OfficePassport = Normalize(dataReader[7].ToString());
+                    militaryData.OfficeReal = Normalize(dataReader[8].ToString());
+                }
+            }
+            connection.Close();
+        }
+        private void LoadDiploma()
+        {
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "Select * From [Diploma] Where IID = @IID";
+            cmd.Parameters.AddWithValue("@IID", this.iid);
+            SqlDataReader dataReader = cmd.ExecuteReader();
+            if (dataReader.HasRows)
+            {
+                EducationList.Clear();
+                while (dataReader.Read())
+                {
+                    EducationData data = new EducationData();
+                    data.UniversityName = Normalize(dataReader[1].ToString());
+                    data.DiplomaName = Normalize(dataReader[2].ToString());
+                    data.Year = Convert.ToInt32(dataReader[3].ToString());
+                    EducationList.Add(data);
+                }
+            }
+            connection.Close();
+        }
+        private void LoadProfession()
+        {
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "Select * From [Profession] Where IID = @IID";
+            cmd.Parameters.AddWithValue("@IID", this.iid);
+            SqlDataReader dataReader = cmd.ExecuteReader();
+            if (dataReader.HasRows)
+            {
+                Professionlist.Clear();
+                while (dataReader.Read())
+                {
+                    ProfessionData data = new ProfessionData();
+                    data.Profession = Normalize(dataReader[1].ToString());
+                    data.Qualification = Normalize(dataReader[2].ToString());
+                    data.StudyForm = Normalize(dataReader[3].ToString());
+                    Professionlist.Add(data);
+                }
+            }
+            connection.Close();
+        }
+        private void LoadAppointment()
+        {
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "Select * From [Appointment] Where IID = @IID";
+            cmd.Parameters.AddWithValue("@IID", this.iid);
+            SqlDataReader dataReader = cmd.ExecuteReader();
+            if (dataReader.HasRows)
+            {
+                AppointmentList.Clear();
+                while (dataReader.Read())
+                {
+                    AppointmentData data = new AppointmentData();
+                    data.Date = Convert.ToDateTime(dataReader[1]).ToShortDateString();
+                    data.Department = Normalize(dataReader[2].ToString());
+                    data.Position = Normalize(dataReader[3].ToString());
+                    data.Code = Normalize(dataReader[4].ToString());
+                    data.Salary = Convert.ToDecimal(dataReader[5]);
+                    data.Reason = Normalize(dataReader[6].ToString());
+                    AppointmentList.Add(data);
+                }
+            }
+            connection.Close();
+        }
+
+        private void Edit()
+        {
+            EditMain();
+            EditMilitary();
+            EditFamily();
+            EditDiploma();
+            EditProfession();
+            EditAppointment();
+        }
+        private void EditMain()
+        {
+            if (!string.IsNullOrEmpty(text_pictureName.Text))
+            {
+                ImageBytes = GetImageFromLoc(text_pictureName.Text);
+            }
+            else if (ImageBytes == null)
+            {
+                try
+                {
+                    ImageBytes = GetImageFromLoc(text_pictureName.Text);
+                }
+                catch (Exception exp)
+                {
+                    throw new Exception("Виберiть зображення");
+                }
+            }
+            //Update
+            connection.Open();
+            SqlCommand cmd2 = new SqlCommand();
+            cmd2.Connection = connection;
+            cmd2.CommandText = "Update [Table] set DateOfCompletion = @DateOfCompletion ,IsMale = @IsMale,IsMainWork = @IsMainWork,Department = @Department,Position = @Position,Surname = @Surname,Name = @Name,Lastname = @Lastname,Birthday = @Birthday,Citizenship = @Citizenship,LastWorkPlace = @LastWorkPlace,LastWorkPosition = @LastWorkPosition,ExperienceD = @ExperienceD,ExperienceM = @ExperienceM,ExperienceY = @ExperienceY,DateOfDismissal = @DateOfDismissal,DismissalReason = @DismissalReason,Pension = @Pension,FamilyStatus = @FamilyStatus,PassportAdress = @PassportAdress,RealAdress = @RealAdress,PassportSerial = @PassportSerial,PassportNumber = @PassportNumber,IssuingAuthority = @IssuingAuthority,TelephoneNumber = @TelephoneNumber,PassportDate = @PassportDate,Picture = @Image where IID = @IID";
+            Dictionary<string, string> dS = new Dictionary<string, string>()
+            {
+                {"@Department",text_department.Text },
+                {"@Position",text_position.Text },
+                {"@Surname", text_surname.Text },
+                {"@Lastname", text_lastname.Text },
+                {"@Name",text_name.Text },
+                {"@Citizenship",text_citizenship.Text },
+                {"@LastWorkPlace", text_lastWorkPlace.Text },
+                {"@LastWorkPosition", text_lastWorkPosition.Text },
+                {"@DismissalReason",text_DismissalReason.Text },
+                {"@Pension", text_Pension.Text },
+                {"@FamilyStatus", Combo_FamilyStatus.SelectedItem.ToString() },
+                {"@PassportAdress", text_passportAdress.Text },
+                {"@RealAdress", text_realAdress.Text },
+                {"@IssuingAuthority", text_authority.Text},
+                {"@PassportSerial", text_passportSerial.Text },
+                {"@PassportNumber", text_passport.Text },
+                {"@IID", text_iid.Text },
+                {"@TelephoneNumber", text_phone.Text },
+            };
+            Dictionary<string, bool> dB = new Dictionary<string, bool>()
+            {
+                { "@IsMale", Convert.ToBoolean( Combo_gender.SelectedIndex) },
+                { "@IsMainWork",  Convert.ToBoolean(Combo_workType.SelectedIndex) }
+            };
+            Dictionary<string, int> dI = new Dictionary<string, int>()
+            {
+                { "@ExperienceD", int.Parse(text_expD.Text)},
+                { "@ExperienceM", int.Parse(text_expM.Text)},
+                { "@ExperienceY", int.Parse(text_expY.Text)}
+            };
+            Dictionary<string, DateTime> dD = new Dictionary<string, DateTime>()
+            {
+                {"@DateOfCompletion", Convert.ToDateTime(DatePicker_Completion.SelectedDate)},
+                {"@Birthday", Convert.ToDateTime(DatePicker_Birthday.SelectedDate)},
+                {"@DateOfDismissal", Convert.ToDateTime(DatePicker_Dismissal.SelectedDate)},
+                {"@PassportDate",Convert.ToDateTime(DatePicker_PassportDate.SelectedDate) }
+            };
+            //Add to parametrs
+            foreach (var item in dS)
+                cmd2.Parameters.AddWithValue(item.Key, item.Value);
+            foreach (var item in dI)
+                cmd2.Parameters.AddWithValue(item.Key, item.Value);
+            foreach (var item in dB)
+                cmd2.Parameters.AddWithValue(item.Key, item.Value);
+            foreach (var item in dD)
+                cmd2.Parameters.AddWithValue(item.Key, item.Value);
+            cmd2.Parameters.AddWithValue("@Image", ImageBytes);
+            //Execute
+            try
+            {
+                cmd2.ExecuteNonQuery();
+                //MessageBox.Show(newId.ToString());
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        private void EditMilitary()
+        {
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "Update [Military] set _Group = @g,Category = @c,Staff = @Staff, _Rank = @r, Number = @Number, Suitability = @Suit, OfficePassport = @OfficePassport, OfficeReal = @OfficeReal where IID = @IID";
+            Dictionary<string, string> ds = new Dictionary<string, string>()
+            {
+                {"@g",militaryData.Group},
+                {"@c",militaryData.Category },
+                {"@Staff",militaryData.Staff },
+                {"@r",militaryData.Rank },
+                {"@Number",militaryData.Number },
+                {"@Suit",militaryData.Suitability },
+                {"@OfficePassport",militaryData.OfficePassport },
+                {"@OfficeReal",militaryData.OfficeReal },
+                {"@IID",text_iid.Text }
+            };
+            foreach (var item in ds)
+                cmd.Parameters.AddWithValue(item.Key, item.Value);
+
+            cmd.ExecuteNonQuery();
+            connection.Close();
+        }
+        private void EditFamily()
+        {
+            ClearTable(connection, "[Family]", iid);
+            foreach (var item in FamilyList)
+                AddFamilyMember(item);
+        }
+        private void EditDiploma()
+        {
+            ClearTable(connection, "[Diploma]", iid);
+            foreach (var item in EducationList)
+                AddDiplomaData(item);
+        }
+        private void EditProfession()
+        {
+            ClearTable(connection, "[Profession]", iid);
+            foreach (var item in Professionlist)
+                AddProfessionData(item);
+
+        }
+        private void EditAppointment()
+        {
+            ClearTable(connection, "[Appointment]", iid);
+            foreach (var item in AppointmentList)
+                AddApointmentData(item);
         }
     }
 }

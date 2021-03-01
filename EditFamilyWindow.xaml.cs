@@ -37,7 +37,14 @@ namespace Human_Resources_Department
         {
             if (Check())
             {
-                list.Add(new FamilyMember(combo_status.SelectedItem.ToString(), text_pib.Text, int.Parse(text_year.Text)));
+                try
+                {
+                    list.Add(new FamilyMember(combo_status.SelectedItem.ToString(), text_pib.Text, int.Parse(text_year.Text)));
+                }
+                catch(Exception exp)
+                {
+                    MessageBox.Show(exp.Message);
+                }
                 RefreshGrid();
                 Reset();
             }

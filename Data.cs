@@ -64,6 +64,10 @@ namespace Human_Resources_Department
             }
         }
 
+        public FamilyMember()
+        {
+        }
+
         public string status { get; set; }
         public string pib { get; set; }
         public int year { get; set; }
@@ -162,6 +166,11 @@ namespace Human_Resources_Department
                 this.Year = data.Year;
             }
         }
+
+        public EducationData()
+        {
+        }
+
         public string UniversityName { get; set; }
         public string DiplomaName { get; set; }
         public int Year { get; set; }
@@ -196,6 +205,11 @@ namespace Human_Resources_Department
                 this.StudyForm = data.StudyForm;
             }
         }
+
+        public ProfessionData()
+        {
+        }
+
         public string Profession { get; set; }
         public string Qualification { get; set; }
         public string StudyForm { get; set; }
