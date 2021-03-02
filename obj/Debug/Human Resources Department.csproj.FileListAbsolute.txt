@@ -29,3 +29,5 @@ C:\Users\admin\source\repos\Human Resources Department\obj\Debug\EducationWindow
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\EducationWindow.baml
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\AppointmentWindow.g.cs
 C:\Users\admin\source\repos\Human Resources Department\obj\Debug\AppointmentWindow.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\HolidayWindow.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Debug\HolidayWindow.baml

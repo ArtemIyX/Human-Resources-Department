@@ -53,9 +53,15 @@
         <TextBox x:Name="text_pib" Style="{StaticResource TextBox_1 }"  MaxLength="100"  Grid.Column="1" Grid.Row="2" Margin="5,7,2,4" />
         <TextBox x:Name="text_year" Style="{StaticResource TextBox_1 }"  MaxLength="100"  Grid.Column="1" Grid.Row="3" Margin="5,7,2,4" />
         <StackPanel HorizontalAlignment="Right" Margin="5" Orientation="Horizontal" Grid.ColumnSpan="2" Grid.Row="4" Width="330">
-            <Button x:Name="btn_add" Click="btn_add_Click" Width="100" Margin="5,0,5,0">ADD</Button>
-            <Button x:Name="btn_edit" Click="btn_edit_Click" Width="100" Margin="5,0,5,0">EDIT</Button>
-            <Button x:Name="btn_remove" Click="btn_remove_Click" Width="100" Margin="5,0,5,0">REMOVE</Button>
+            <Button x:Name="btn_add" Click="btn_add_Click" Width="100" Margin="5,0,5,0" Background="#FFD7FFD0">
+                <TextBlock Text="Додати" FontSize="16" VerticalAlignment="Center" Margin="15,0,15,0"/>
+            </Button>
+            <Button x:Name="btn_edit" Click="btn_edit_Click" Width="100" Margin="5,0,5,0" Background="#FFFFFDD4">
+                <TextBlock Text="Редагувати" FontSize="13" Margin="15,0,15,0"/>
+            </Button>
+            <Button x:Name="btn_remove" Click ="btn_remove_Click"  Width="100" Margin="5,0,5,0" Background="#FFFFE2E2">
+                <TextBlock Text="Видалити" FontSize="13" Margin="15,0,15,0"/>
+            </Button>
         </StackPanel>
     </Grid>
 </Window>

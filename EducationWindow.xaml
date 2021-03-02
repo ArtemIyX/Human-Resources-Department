@@ -52,13 +52,19 @@
         <TextBlock Style="{StaticResource Text_1 }" VerticalAlignment="Center" Grid.Row="1"  Text="Назва освiтнього закладу"  Margin="5,8,5,9" Height="24"/>
         <TextBlock Style="{StaticResource Text_1 }"  Text="Диплом(свiдоцтво), серiя, номер"  Grid.Row="2" TextAlignment="Right" FontSize="16" Margin="0,1,5,2" Height="42"/>
         <TextBlock Style="{StaticResource Text_1 }"   Text="Рiк закiнчення"  Grid.Row="3"  Margin="0,12,5,9" Height="24"  />
-        <TextBox x:Name="text_uName" Style="{StaticResource TextBox_1 }"  MaxLength="150" FontWeight="Light" FontSize="23" VerticalAlignment="Center"  Grid.Column="1" Grid.Row="1" Margin="5" Height="31"  />
+        <TextBox x:Name="text_uName" Style="{StaticResource TextBox_1 }"  MaxLength="150" FontWeight="Light" FontSize="14" VerticalAlignment="Center"  Grid.Column="1" Grid.Row="1" Margin="5" Height="31"  />
         <TextBox x:Name="text_dName" Style="{StaticResource TextBox_1 }"  MaxLength="150" FontWeight="Light" FontSize="12" Grid.Column="1" Grid.Row="2" Margin="5,7,2,4"  />
         <TextBox x:Name="text_year" Style="{StaticResource TextBox_1 }"  MaxLength="4"   FontWeight="Light" FontSize="23" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Width="75" Margin="5,7,0,4" />
         <StackPanel  Margin="158,5,159,5" Orientation="Horizontal" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center" Width="330" >
-            <Button x:Name="btn_addA" Click="btn_addA_Click" Width="100" Margin="5,0,5,0">ADD</Button>
-            <Button x:Name="btn_editA" Click="btn_editA_Click" Width="100" Margin="5,0,5,0">EDIT</Button>
-            <Button x:Name="btn_removeA" Click="btn_removeA_Click" Width="100" Margin="5,0,5,0">REMOVE</Button>
+            <Button x:Name="btn_addA" Click="btn_addA_Click" Width="100" Margin="5,0,5,0" Background="#FFD7FFD0" >
+                <TextBlock Text="Додати" FontSize="16" VerticalAlignment="Center" Margin="15,0,15,0"/>
+            </Button>
+            <Button x:Name="btn_editA" Click="btn_editA_Click" Width="100" Margin="5,0,5,0" Background="#FFFFFDD4">
+                <TextBlock Text="Редагувати" FontSize="13" Margin="15,0,15,0"/>
+            </Button>
+            <Button x:Name="btn_removeA" Click="btn_removeA_Click" Width="100" Margin="5,0,5,0" Background="#FFFFE2E2">
+                <TextBlock Text="Видалити" FontSize="13" Margin="15,0,15,0"/>
+            </Button>
         </StackPanel>
 
 
@@ -72,13 +78,19 @@
         <TextBlock Style="{StaticResource Text_1 }" VerticalAlignment="Center"  Text="Спецiальнiсть"  Grid.Column="2" Margin="0,9,5,8" Height="24" Grid.Row="1"/>
         <TextBlock Style="{StaticResource Text_1 }" VerticalAlignment="Center" Text="Квалiфiкацiя" Grid.Column="2"  Grid.Row="2" TextAlignment="Right" FontSize="16" Margin="0,11,5,12" Height="22"></TextBlock>
         <TextBlock Style="{StaticResource Text_1 }" VerticalAlignment="Center"  Text="Форма навчання" Grid.Column="2" Grid.Row="3"  Margin="0,12,5,9" Height="24"></TextBlock>
-        <TextBox x:Name="text_profession" Style="{StaticResource TextBox_1 }"  MaxLength="150" FontWeight="Light" FontSize="23" VerticalAlignment="Center"  Grid.Column="3" Grid.Row="1" Margin="5" Height="31"  ></TextBox>
+        <TextBox x:Name="text_profession" Style="{StaticResource TextBox_1 }"  MaxLength="150" FontWeight="Light" FontSize="18" VerticalAlignment="Center"  Grid.Column="3" Grid.Row="1" Margin="5" Height="31"  ></TextBox>
         <TextBox x:Name="text_qualification" Style="{StaticResource TextBox_1 }"  MaxLength="150" FontWeight="Light" FontSize="23" Grid.Column="3" Grid.Row="2" Margin="5,7,2,4"  />
         <ComboBox x:Name="combo_studyForm" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Left" Width="180" Margin="7,7,0,7"></ComboBox>
         <StackPanel  Margin="145,5,144,5" Orientation="Horizontal" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Width="330" >
-            <Button x:Name="btn_addB" Click="btn_addB_Click" Width="100" Margin="5,0,5,0">ADD</Button>
-            <Button x:Name="btn_editB" Click="btn_editB_Click" Width="100" Margin="5,0,5,0">EDIT</Button>
-            <Button x:Name="btn_removeB" Click="btn_removeB_Click" Width="100" Margin="5,0,5,0">REMOVE</Button>
+            <Button x:Name="btn_addB" Click="btn_addB_Click" Width="100" Margin="5,0,5,0" Background="#FFD7FFD0">
+                <TextBlock Text="Додати" FontSize="16" VerticalAlignment="Center" Margin="15,0,15,0"/>
+            </Button>
+            <Button x:Name="btn_editB" Click="btn_editB_Click" Width="100" Margin="5,0,5,0" Background="#FFFFFDD4">
+                <TextBlock Text="Редагувати" FontSize="13" Margin="15,0,15,0"/>
+            </Button>
+            <Button x:Name="btn_removeB" Click="btn_removeB_Click" Width="100" Margin="5,0,5,0" Background="#FFFFE2E2">
+                <TextBlock Text="Видалити" FontSize="13" Margin="15,0,15,0"/>
+            </Button>
         </StackPanel>
     </Grid>
 </Window>

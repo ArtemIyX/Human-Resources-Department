@@ -9,12 +9,16 @@
         Loaded="Window_Main_Loaded"
         Closing="Window_Main_Closing">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="633*"/>
+            <RowDefinition Height="56*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="479*"/>
             <ColumnDefinition Width="157*"/>
         </Grid.ColumnDefinitions>
         <DataGrid x:Name="grid_employeers" FontSize="18" CanUserAddRows="False" SelectionMode="Single" CanUserDeleteRows="False"
-                  IsReadOnly="True">
+                  IsReadOnly="True" Grid.RowSpan="1">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Прізвище" MinWidth="100" Binding="{Binding surname}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Ім'я" MinWidth="100"  Binding="{Binding name}"></DataGridTextColumn>
@@ -24,32 +28,57 @@
                 <DataGridTextColumn Header="Дата прийому на роботу" MinWidth="150" Binding="{Binding employment_date}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Column="1" Margin="5">
+        <StackPanel Grid.Column="1" Margin="5" Grid.RowSpan="2">
             <Button x:Name="button_createNew"
                     Margin="0,12,10,10" 
                     MinHeight="75" 
                     HorizontalAlignment="Right" 
-                    Width="250" Height="50"
+                    Width="250" Height="50" Background="#FFFAFFFF" BorderBrush="Black" 
                     Click="button_createNew_Click">
-                NEW
+                <TextBlock Text="Новий співробітник" TextAlignment="Center"  FontSize="28" TextWrapping="Wrap" Margin="0"  ></TextBlock>
             </Button>
             <Button x:Name="button_edit"
                     Margin="0,12,10,10" 
                     MinHeight="75" 
-                    HorizontalAlignment="Right" 
+                    HorizontalAlignment="Right" Background="#FFFAFFFF" BorderBrush="Black" 
                     Width="250" Height="50"
                     Click="button_edit_Click">
-                EDIT
+                <TextBlock Text="Редагувати" TextAlignment="Center"  FontSize="28" TextWrapping="Wrap" Margin="0"  ></TextBlock>
             </Button>
             <Button x:Name="button_debug" 
                     Margin="0,12,10,10" 
                     MinHeight="75" 
-                    HorizontalAlignment="Right" 
+                    HorizontalAlignment="Right" Background="#FFEEFFFE" BorderBrush="Black" 
                     Width="250" 
                     Height="50"
-                    Click="button_debug_Click">
+                    Click="button_debug_Click"
+                    Visibility="Collapsed">
                 DEBUG
             </Button>
+            <StackPanel Orientation="Horizontal" Margin="10,10,0,10">
+                <Viewbox Width="35" Height="35">
+                    <CheckBox Checked="check_ageSort_Checked" Unchecked="check_ageSort_Unchecked" x:Name="check_ageSort" ></CheckBox>
+                </Viewbox>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Сортування за вiком" FontSize="20"></TextBlock>
+            </StackPanel>
+            <StackPanel x:Name="stack_sort" IsEnabled="False" Margin="10,0,0,10" Orientation="Horizontal">
+                <TextBlock x:Name="text_from" Text="Вiд" FontSize="25"></TextBlock>
+                <TextBox x:Name="textB_from" FontSize="18" Width="35" Margin="5"></TextBox>
+                <TextBlock x:Name="text_to" Text="До" FontSize="25"></TextBlock>
+                <TextBox x:Name="textB_to" FontSize="18" Width="35" Margin="5"></TextBox>
+                <Button x:Name="btn_updSort" Click="btn_updSort_Click" Margin="3" Background ="#FFEEFFFE">
+                    <TextBlock Text="Оновити" FontSize="21" ></TextBlock>
+                </Button>
+            </StackPanel>
+            <TextBlock Visibility="Collapsed" x:Name="text_found" Text="Знайдено: " Margin="10,0,0,0" HorizontalAlignment="Left" FontSize="25"></TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="5">
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="Сотрудникiв:" FontSize="25"></TextBlock>
+            <TextBox x:Name="text_total" IsReadOnly="True" HorizontalAlignment="Left" TextAlignment="Right" VerticalAlignment="Stretch" Text="0" FontSize="24" Width="75" Margin="7"></TextBox>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="Чоловiкiв:" FontSize="25"></TextBlock>
+            <TextBox x:Name="text_male" IsReadOnly="True" HorizontalAlignment="Left" TextAlignment="Right" VerticalAlignment="Stretch" Text="0" FontSize="24" Width="75" Margin="7"></TextBox>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="Жiнок:" FontSize="25"></TextBlock>
+            <TextBox x:Name="text_female" IsReadOnly="True" HorizontalAlignment="Left" TextAlignment="Right" VerticalAlignment="Stretch" Text="0" FontSize="24" Width="75" Margin="7"></TextBox>
         </StackPanel>
     </Grid>
 </Window>

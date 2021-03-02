@@ -39,6 +39,7 @@ namespace Human_Resources_Department
         private List<ProfessionData> Professionlist = new List<ProfessionData>();
         private MilitaryData militaryData = new MilitaryData();
         private List<AppointmentData> AppointmentList = new List<AppointmentData>();
+        private List<VacationData> VacationList = new List<VacationData>();
 
         //private string[] Genders = new string[] { "Жiноча", "Чоловiча" };
         //private string[] WorkTypes = new string[] { "За сумiсництвом", "Основна" };
@@ -55,6 +56,7 @@ namespace Human_Resources_Department
         {
             FillCombo(Combo_gender, new string[] { "Жiноча", "Чоловiча" });
             FillCombo(Combo_workType, new string[] { "За сумiсництвом", "Основна" });
+            Combo_workType.SelectedIndex = 1;
             FillCombo(Combo_FamilyStatus, new string[] { "Одружений", "Неодружений", "Замiжня", "Незамiжня", "Розлучений", "Розлучена", "Вдова", "Вдiвець" });
             if (this.WindowMode == EWindowMode.CreateNew)
             {
@@ -73,6 +75,7 @@ namespace Human_Resources_Department
             }
             else if (this.WindowMode == EWindowMode.Edit)
             {
+                this.Title = "Редагувати сотрудника";
                 try
                 {
                     Load();
@@ -84,13 +87,17 @@ namespace Human_Resources_Department
                     this.Close();
                 }
             }
-
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (!DontShowQuitMessage)
+            if (this.WindowMode == EWindowMode.CreateNew && !DontShowQuitMessage)
             {
                 MessageBoxResult resuult = MessageBox.Show("Ви хочете завершити створення сотрудника?", "Вийти?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                e.Cancel = resuult == MessageBoxResult.No;
+            }
+            else if (this.WindowMode == EWindowMode.Edit && !DontShowQuitMessage)
+            {
+                MessageBoxResult resuult = MessageBox.Show("Вийти та не застосувати зміни?", "Вийти?", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 e.Cancel = resuult == MessageBoxResult.No;
             }
         }
@@ -98,51 +105,26 @@ namespace Human_Resources_Department
 
         private void btn_create_Click(object sender, RoutedEventArgs e)
         {
-            //if (!CannAddThisIID(text_iid.Text)) return;
-            //if (!Check(text_iid, "Введiть корректний IIД")) return;
-            //if (!Check(text_surname, "Введiть корректне прiзвище")) return;
-            //if (!Check(text_name, "Введiть корректне iм'я")) return;
-            //if (!Check(text_lastname, "Введiть корректне по батьковi")) return;
-            //if (!Check(text_department, "Введiть корректний пiдроздiл")) return;
-            //if (!Check(text_position, "Введiть корректну посаду")) return;
-            //if (!Check(text_phone, "Введiть корректну телефон")) return;
-            //if (!Check(text_citizenship, "Введiть корректне громадянство")) return;
-            //if (!Check(text_lastWorkPosition, "Введiть корректне останню посаду")) return;
-            //if (!Check(text_lastWorkPlace, "Введiть корректне останнє мiсце роботи")) return;
-            //if (!Check(text_DismissalReason, "Введiть корректну причину звiльнення")) return;
-            //if (!Check(text_expD, "Введiть кiлькiсть днiв стажу")) return;
-            //if (!Check(text_expM, "Введiть кiлькiсть мiсяцiв стажу")) return;
-            //if (!Check(text_expY, "Введiть кiлькiсть рокiв стажу")) return;
-            //if (!Check(text_Pension, "Введiть вiдомостi про отримання пенсiї")) return;
-            //if (!Check(DatePicker_Birthday, "Введiть дату дня народження")) return;
-            //if (!Check(DatePicker_Dismissal, "Введiть дату звiльнення")) return;
-            //if (!Check(DatePicker_Completion, "Введiть дату заполнення")) return;
-            //if (!CheckIsNumeric(text_expD.Text, "Дані про досвід введені некоректно")) return;
-            //if (!CheckIsNumeric(text_expM.Text, "Дані про досвід введені некоректно")) return;
-            //if (!CheckIsNumeric(text_expY.Text, "Дані про досвід введені некоректно")) return;
-            //if (!Check(text_realAdress, "Введiть коректне мiсце фактичного проживання")) return;
-            //if (!Check(text_passport, "Введiть коректне мiсце проживання за державною реєстрацією")) return;
-            //if (!Check(text_authority, "Введiть коректне видаництво паспорту")) return;
-            //if (!Check(text_passportSerial, "Введiть коректну серiю паспорту")) return;
-            //if (!Check(text_passport, "Введiть коректний номер паспорту")) return;
-            //if (!Check(DatePicker_PassportDate, "Введiть коректну дату видачi паспорту")) return;
-            //if (!Check(text_pictureName, "Виберiть фотографiю")) return;
             if (this.WindowMode == EWindowMode.CreateNew)
             {
-                try
+                if (CheckAdd())
                 {
-                    Add();
-                    DontShowQuitMessage = true;
-                    this.Close();
-                }
-                catch (Exception exp)
-                {
-                    MessageBox.Show(exp.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                finally
-                {
-                    if (connection.State != System.Data.ConnectionState.Closed)
-                        connection.Close();
+                    try
+                    {
+                        Add();
+                        DontShowQuitMessage = true;
+                        this.Close();
+                    }
+                    catch (Exception exp)
+                    {
+                        MessageBox.Show(exp.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    finally
+                    {
+                        if (connection.State != System.Data.ConnectionState.Closed)
+                            connection.Close();
+
+                    }
                 }
             }
             else if (this.WindowMode == EWindowMode.Edit)
@@ -163,6 +145,7 @@ namespace Human_Resources_Department
                         connection.Close();
                 }
             }
+
         }
         private void btn_selectPicture_Click(object sender, RoutedEventArgs e)
         {
@@ -206,8 +189,46 @@ namespace Human_Resources_Department
         }
         private void btn_appointment_Click(object sender, RoutedEventArgs e)
         {
-            AppointmentWindow window = new AppointmentWindow(AppointmentList);
+            AppointmentWindow window = new AppointmentWindow(AppointmentList, text_department.Text, text_position.Text);
             window.ShowDialog();
+        }
+        private void btn_holiday_Click(object sender, RoutedEventArgs e)
+        {
+            HolidayWindow window = new HolidayWindow(VacationList);
+            window.ShowDialog();
+        }
+        private bool CheckAdd()
+        {
+            if (!CannAddThisIID(text_iid.Text)) return false;
+            if (!Check(text_iid, "Введiть корректний IIД")) return false;
+            if (!Check(text_surname, "Введiть корректне прiзвище")) return false;
+            if (!Check(text_name, "Введiть корректне iм'я")) return false;
+            if (!Check(text_lastname, "Введiть корректне по батьковi")) return false;
+            if (!Check(text_department, "Введiть корректний пiдроздiл")) return false;
+            if (!Check(text_position, "Введiть корректну посаду")) return false;
+            if (!Check(text_phone, "Введiть корректну телефон")) return false;
+            if (!Check(text_citizenship, "Введiть корректне громадянство")) return false;
+            if (!Check(text_lastWorkPosition, "Введiть корректне останню посаду")) return false;
+            if (!Check(text_lastWorkPlace, "Введiть корректне останнє мiсце роботи")) return false;
+            if (!Check(text_DismissalReason, "Введiть корректну причину звiльнення")) return false;
+            if (!Check(text_expD, "Введiть кiлькiсть днiв стажу")) return false;
+            if (!Check(text_expM, "Введiть кiлькiсть мiсяцiв стажу")) return false;
+            if (!Check(text_expY, "Введiть кiлькiсть рокiв стажу")) return false;
+            if (!Check(text_Pension, "Введiть вiдомостi про отримання пенсiї")) return false;
+            if (!Check(DatePicker_Birthday, "Введiть дату дня народження")) return false;
+            if (!Check(DatePicker_Dismissal, "Введiть дату звiльнення")) return false;
+            if (!Check(DatePicker_Completion, "Введiть дату заполнення")) return false;
+            if (!CheckIsNumeric(text_expD.Text, "Дані про досвід введені некоректно")) return false;
+            if (!CheckIsNumeric(text_expM.Text, "Дані про досвід введені некоректно")) return false;
+            if (!CheckIsNumeric(text_expY.Text, "Дані про досвід введені некоректно")) return false;
+            if (!Check(text_realAdress, "Введiть коректне мiсце фактичного проживання")) return false;
+            if (!Check(text_passport, "Введiть коректне мiсце проживання за державною реєстрацією")) return false;
+            if (!Check(text_authority, "Введiть коректне видаництво паспорту")) return false;
+            if (!Check(text_passportSerial, "Введiть коректну серiю паспорту")) return false;
+            if (!Check(text_passport, "Введiть коректний номер паспорту")) return false;
+            if (!Check(DatePicker_PassportDate, "Введiть коректну дату видачi паспорту")) return false;
+            if (!Check(text_pictureName, "Виберiть фотографiю")) return false;
+            return true;
         }
 
         private void RefreshFamilyGrid()
@@ -307,7 +328,8 @@ namespace Human_Resources_Department
                 AddProfessionData(item);
             foreach (var item in AppointmentList)
                 AddApointmentData(item);
-
+            foreach (var item in VacationList)
+                AddVacationData(item);
         }
         private void AddEducations()
         {
@@ -448,6 +470,30 @@ namespace Human_Resources_Department
             cmd.ExecuteNonQuery();
             connection.Close();
         }
+        private void AddVacationData(VacationData data)
+        {
+            data.Check();
+            int id = GetLastIdFromTable(connection, "[Vacation]");
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "Insert Into [Vacation] (Id,Type,Period,BeginDate,EndDate,Reason,IID) Values (@Id, @Type, @Period, @Begin, @End,@Reason, @IID)";
+            Dictionary<string, string> ds = new Dictionary<string, string>()
+            {
+                {"@Type",data.Type},
+                {"@Period",data.Period },
+                {"@Reason",data.Reason },
+                {"@IID",text_iid.Text }
+            };
+            foreach (var item in ds)
+                cmd.Parameters.AddWithValue(item.Key, item.Value);
+            cmd.Parameters.AddWithValue("@Id", id);
+            cmd.Parameters.AddWithValue("@Begin", DateTime.Parse(data.Begin));
+            cmd.Parameters.AddWithValue("@End", DateTime.Parse(data.End));
+            cmd.ExecuteNonQuery();
+            connection.Close();
+        }
+
 
         private bool CannAddThisIID(string Iiid)
         {
@@ -462,7 +508,7 @@ namespace Human_Resources_Department
             dataAdapter.Fill(data);
             if (data.Rows.Count >= 1)
             {
-                MessageBox.Show("Такий Iндивiдуальний iденфiкацiйний номер вже використовується", "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Такий Iндивiдуальний iдентифiкацiйний номер вже використовується", "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
                 connection.Close();
                 return false;
             }
@@ -487,7 +533,7 @@ namespace Human_Resources_Department
             LoadDiploma();
             LoadProfession();
             LoadAppointment();
-
+            LoadVacation();
             text_iid.Text = this.iid;
             text_iid.IsReadOnly = true;
             RefreshFamilyGrid();
@@ -722,6 +768,30 @@ namespace Human_Resources_Department
             }
             connection.Close();
         }
+        private void LoadVacation()
+        {
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "Select * From [Vacation] Where IID = @IID";
+            cmd.Parameters.AddWithValue("@IID", this.iid);
+            SqlDataReader dataReader = cmd.ExecuteReader();
+            if (dataReader.HasRows)
+            {
+                VacationList.Clear();
+                while (dataReader.Read())
+                {
+                    VacationData data = new VacationData();
+                    data.Type = Normalize(dataReader[1].ToString());
+                    data.Period = Normalize(dataReader[2].ToString());
+                    data.Begin = Convert.ToDateTime(dataReader[3]).ToShortDateString();
+                    data.End = Convert.ToDateTime(dataReader[4]).ToShortDateString();
+                    data.Reason = Normalize(dataReader[5].ToString());
+                    VacationList.Add(data);
+                }
+            }
+            connection.Close();
+        }
 
         private void Edit()
         {
@@ -731,6 +801,7 @@ namespace Human_Resources_Department
             EditDiploma();
             EditProfession();
             EditAppointment();
+            EditVacation();
         }
         private void EditMain()
         {
@@ -744,7 +815,7 @@ namespace Human_Resources_Department
                 {
                     ImageBytes = GetImageFromLoc(text_pictureName.Text);
                 }
-                catch (Exception exp)
+                catch (Exception)
                 {
                     throw new Exception("Виберiть зображення");
                 }
@@ -863,5 +934,12 @@ namespace Human_Resources_Department
             foreach (var item in AppointmentList)
                 AddApointmentData(item);
         }
+        private void EditVacation()
+        {
+            ClearTable(connection, "[Vacation]", iid);
+            foreach (var item in VacationList)
+                AddVacationData(item);
+        }
+
     }
 }

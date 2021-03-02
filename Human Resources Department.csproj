@@ -86,6 +86,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="HolidayWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -97,16 +101,6 @@
     <Compile Include="AppointmentWindow.xaml.cs">
       <DependentUpon>AppointmentWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BDDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BDDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="BDDataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BDDataSet1.xsd</DependentUpon>
-    </Compile>
     <Compile Include="DBHelper.cs" />
     <Compile Include="EditFamilyWindow.xaml.cs">
       <DependentUpon>EditFamilyWindow.xaml</DependentUpon>
@@ -117,6 +111,9 @@
     </Compile>
     <Compile Include="EmployeeDebugWindow.xaml.cs">
       <DependentUpon>EmployeeDebugWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HolidayWindow.xaml.cs">
+      <DependentUpon>HolidayWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -155,28 +152,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="BDDataSet.xsc">
-      <DependentUpon>BDDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="BDDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>BDDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="BDDataSet.xss">
-      <DependentUpon>BDDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="BDDataSet1.xsc">
-      <DependentUpon>BDDataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="BDDataSet1.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>BDDataSet1.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="BDDataSet1.xss">
-      <DependentUpon>BDDataSet1.xsd</DependentUpon>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

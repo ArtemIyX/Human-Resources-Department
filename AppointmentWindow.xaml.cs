@@ -20,15 +20,28 @@ namespace Human_Resources_Department
     public partial class AppointmentWindow : Window
     {
         public List<AppointmentData> list = null;
-        public AppointmentWindow(List<AppointmentData> list)
+        private string depart;
+        private string pos;
+        public AppointmentWindow(List<AppointmentData> list, string depart, string pos)
         {
             InitializeComponent();
             this.list = list;
+            this.depart = depart;
+            this.pos = pos;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             RefreshGrid();
+            datePicker_date.SelectedDate = DateTime.Now;
+            if(list.Count <= 0)
+            {
+                if(!string.IsNullOrEmpty(depart) && !string.IsNullOrEmpty(pos))
+                {
+                    text_department.Text = depart;
+                    text_position.Text = pos;
+                }
+            }
         }
         private void AppointmentGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {

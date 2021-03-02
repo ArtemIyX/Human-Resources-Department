@@ -22,7 +22,6 @@ namespace Human_Resources_Department
     /// </summary>
     public partial class EmployeeDebugWindow : Window
     {
-        Window org = null;
         public Action onClosed;
         SqlConnection connection = new SqlConnection(new Settings().BDConnectionString);
         public EmployeeDebugWindow()
@@ -44,6 +43,7 @@ namespace Human_Resources_Department
             DBHelper.LoadTalbe(connection, "[Profession]", profession_grid);
             DBHelper.LoadTalbe(connection, "[Diploma]", diploma_grid);
             DBHelper.LoadTalbe(connection, "[Appointment]", appoint_grid);
+            DBHelper.LoadTalbe(connection, "[Vacation]", vacation_grid);
         }
     }
 }

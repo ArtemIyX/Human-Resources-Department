@@ -19,7 +19,8 @@
             <ColumnDefinition Width="150*"/>
             <ColumnDefinition Width="154*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="debug_grid" Grid.ColumnSpan="2" ></DataGrid>
+        <DataGrid x:Name="debug_grid" Grid.ColumnSpan="1" ></DataGrid>
+        <DataGrid x:Name="vacation_grid" Grid.Column="1" ></DataGrid>
         <DataGrid x:Name="military_grird" Grid.Row="1" Grid.ColumnSpan="1" ></DataGrid>
         <DataGrid x:Name="appoint_grid" Grid.Row="1" Grid.ColumnSpan="1"  Grid.Column="1"></DataGrid>
         <DataGrid x:Name="educations_grid" Grid.Column="2" Grid.ColumnSpan="1"></DataGrid>

@@ -20,7 +20,7 @@ namespace Human_Resources_Department
             this.department = department;
             this.position = position;
             this.employment_date = employment_date;
-        
+
         }
         public string name { get; set; }
         public string surname { get; set; }
@@ -29,7 +29,7 @@ namespace Human_Resources_Department
         public string position { get; set; }
         public string employment_date { get; set; }
 
-        public override void Check() 
+        public override void Check()
         {
             if (string.IsNullOrEmpty(name)) name = "-";
             if (string.IsNullOrEmpty(surname)) surname = "-";
@@ -79,7 +79,7 @@ namespace Human_Resources_Department
     }
     public class MilitaryData : DATA
     {
-        public MilitaryData(string group,string category,string staff,string rank,string number,string suitability,string officePassport,string officeReal)
+        public MilitaryData(string group, string category, string staff, string rank, string number, string suitability, string officePassport, string officeReal)
         {
             this.Group = group;
             this.Category = category;
@@ -104,7 +104,7 @@ namespace Human_Resources_Department
         public MilitaryData(object obj)
         {
             MilitaryData data = obj as MilitaryData;
-            if(data != null)
+            if (data != null)
             {
                 this.Group = data.Group;
                 this.Category = data.Category;
@@ -159,7 +159,7 @@ namespace Human_Resources_Department
         public EducationData(object obj)
         {
             EducationData data = obj as EducationData;
-            if(data != null)
+            if (data != null)
             {
                 this.UniversityName = data.UniversityName;
                 this.DiplomaName = data.UniversityName;
@@ -198,7 +198,7 @@ namespace Human_Resources_Department
         public ProfessionData(Object obj)
         {
             ProfessionData data = obj as ProfessionData;
-            if(data != null)
+            if (data != null)
             {
                 this.Profession = data.Profession;
                 this.Qualification = data.Qualification;
@@ -245,7 +245,7 @@ namespace Human_Resources_Department
         public AppointmentData(Object obj)
         {
             AppointmentData Data = obj as AppointmentData;
-            if(Data != null)
+            if (Data != null)
             {
                 this.Date = Data.Date;
                 this.Department = Data.Department;
@@ -274,6 +274,56 @@ namespace Human_Resources_Department
             if (string.IsNullOrEmpty(Position)) Position = "-";
             if (string.IsNullOrEmpty(Code)) Code = "-";
             if (string.IsNullOrEmpty(Reason)) Reason = "-";
+        }
+    }
+    public class VacationData : DATA
+    {
+        public string Type { get; set; }
+        public string Period { get; set; }
+        public string Begin { get; set; }
+        public string End { get; set; }
+        public string Reason { get; set; }
+
+        public VacationData(string Type, string Period, string Begin, string End, string Reason)
+        {
+            this.Type = Type;
+            this.Period = Period;
+            this.Begin = Begin;
+            this.End = End;
+            this.Reason = Reason;
+        }
+        public VacationData(VacationData data)
+        {
+            this.Type = data.Type;
+            this.Period = data.Period;
+            this.Begin = data.Begin;
+            this.End = data.End;
+            this.Reason = data.Reason;
+        }
+        public VacationData(Object obj)
+        {
+            VacationData data = obj as VacationData;
+            if (data != null)
+            {
+                this.Type = data.Type;
+                this.Period = data.Period;
+                this.Begin = data.Begin;
+                this.End = data.End;
+                this.Reason = data.Reason;
+            }
+        }
+        public VacationData()
+        {
+
+        }
+
+        public override void Check()
+        {
+            if (string.IsNullOrEmpty(Type)) this.Type = "-";
+            if (string.IsNullOrEmpty(Period)) this.Period = "-";
+            if (string.IsNullOrEmpty(Begin)) this.Begin = DateTime.Now.ToShortDateString();
+            if (string.IsNullOrEmpty(End)) this.End = DateTime.Now.ToShortDateString();
+            if (string.IsNullOrEmpty(Reason)) this.Reason = "-";
         }
     }
 }

@@ -1,0 +1,33 @@
+C:\Users\admin\source\repos\Human Resources Department\bin\Release\BD.mdf
+C:\Users\admin\source\repos\Human Resources Department\bin\Release\BD_log.ldf
+C:\Users\admin\source\repos\Human Resources Department\bin\Release\Human Resources Department.exe.config
+C:\Users\admin\source\repos\Human Resources Department\bin\Release\Human Resources Department.exe
+C:\Users\admin\source\repos\Human Resources Department\bin\Release\Human Resources Department.pdb
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\Human Resources Department.csprojAssemblyReference.cache
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\AppointmentWindow.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\EditFamilyWindow.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\EducationWindow.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\EmployeeDebugWindow.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\HolidayWindow.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\MainWindow.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\MilitaryWindow.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\NewEmployeeWindow.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\App.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\Human Resources Department_Content.g.cs
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\Human Resources Department_MarkupCompile.cache
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\Human Resources Department_MarkupCompile.lref
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\App.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\AppointmentWindow.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\EditFamilyWindow.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\EducationWindow.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\EmployeeDebugWindow.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\HolidayWindow.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\MainWindow.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\MilitaryWindow.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\NewEmployeeWindow.baml
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\Human Resources Department.g.resources
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\Human_Resources_Department.Properties.Resources.resources
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\Human Resources Department.csproj.GenerateResource.cache
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\Human Resources Department.csproj.CoreCompileInputs.cache
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\Human Resources Department.exe
+C:\Users\admin\source\repos\Human Resources Department\obj\Release\Human Resources Department.pdb
