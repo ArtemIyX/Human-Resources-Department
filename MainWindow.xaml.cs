@@ -35,6 +35,8 @@ namespace Human_Resources_Department
         {
 
             UpdateMainGrid();
+            DBHelper.FillCombo(combo_findFilter, new string[] { "Прiзвище", "Iм'я", "По батьковi", "Пiдроздiл", "Посада" });
+            combo_findFilter.SelectedIndex = 0;
             stack_sort.IsEnabled = false;
             text_from.Foreground = Brushes.Gray;
             text_to.Foreground = Brushes.Gray;
@@ -64,6 +66,7 @@ namespace Human_Resources_Department
             text_female.Text = fm.ToString();
             text_male.Text = m.ToString();
             text_total.Text = (fm + m).ToString();
+            text_currentCount.Text = grid_employeers.Items.Count.ToString();
         }
 
         private void grid_employeers_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
@@ -84,82 +87,21 @@ namespace Human_Resources_Department
 
         private void button_edit_Click(object sender, RoutedEventArgs e)
         {
-            string IID = "-1";
             if (grid_employeers.SelectedItem == null)
             {
                 MessageBox.Show("Виберiть сотрудника для редагування", "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            Employee employee = grid_employeers.SelectedItem as Employee;
-            connection.Open();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = connection;
-            cmd.CommandText = "Select IID From [Table] Where Name = @name AND Surname = @sur AND Lastname = @last AND Department = @dep AND Position = @pos";
-            Dictionary<string, string> dS = new Dictionary<string, string>()
-            {
-                {"@name",employee.name},
-                {"@sur",employee.surname },
-                {"@last",employee.lastname },
-                {"@dep",employee.department },
-                {"@pos",employee.position }
-            };
-            foreach (var item in dS)
-                cmd.Parameters.AddWithValue(item.Key, item.Value);
-            SqlDataReader dataReader = cmd.ExecuteReader();
-            while (dataReader.Read())
-            {
-                IID = DBHelper.Normalize(dataReader[0].ToString());
-            }
-            connection.Close();
+            string IID = GetIID();
             NewEmployeeWindow newEmployeeWindow = new NewEmployeeWindow(EWindowMode.Edit, IID);
             newEmployeeWindow.ShowDialog();
         }
 
-        private void UpdateOnlyMale()
-        {
-            grid_employeers.Items.Clear();
-            connection.Open();
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = "select Surname,Name,Lastname,Department,Position,DateOfCompletion from [table] where IsMale = '1'";
-            cmd.Connection = connection;
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                Employee employee = new Employee(
-                    reader["Name"].ToString(),
-                    reader["Surname"].ToString(),
-                    reader["Lastname"].ToString(),
-                    reader["Department"].ToString(),
-                    reader["Position"].ToString(),
-                    DateTime.Parse(reader["DateOfCompletion"].ToString()).ToShortDateString());
-                grid_employeers.Items.Add(employee);
-            }
-            connection.Close();
-        }
-        private void UpdateOnlyFemale()
-        {
-            grid_employeers.Items.Clear();
-            connection.Open();
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandText = "select Surname,Name,Lastname,Department,Position,DateOfCompletion from [table] where IsMale = '0'";
-            cmd.Connection = connection;
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                Employee employee = new Employee(
-                    reader["Name"].ToString(),
-                    reader["Surname"].ToString(),
-                    reader["Lastname"].ToString(),
-                    reader["Department"].ToString(),
-                    reader["Position"].ToString(),
-                    DateTime.Parse(reader["DateOfCompletion"].ToString()).ToShortDateString());
-                grid_employeers.Items.Add(employee);
-            }
-            connection.Close();
-        }
+
         private void UpdateAll()
         {
             grid_employeers.Items.Clear();
+            if (connection.State != ConnectionState.Closed) connection.Close();
             connection.Open();
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = "select Surname,Name,Lastname,Department,Position,DateOfCompletion from [table]";
@@ -168,12 +110,12 @@ namespace Human_Resources_Department
             while (reader.Read())
             {
                 Employee employee = new Employee(
-                    reader["Name"].ToString(),
-                    reader["Surname"].ToString(),
-                    reader["Lastname"].ToString(),
-                    reader["Department"].ToString(),
-                    reader["Position"].ToString(),
-                    DateTime.Parse(reader["DateOfCompletion"].ToString()).ToShortDateString());
+                        DBHelper.Normalize(reader["Name"].ToString()),
+                        DBHelper.Normalize(reader["Surname"].ToString()),
+                        DBHelper.Normalize(reader["Lastname"].ToString()),
+                        DBHelper.Normalize(reader["Department"].ToString()),
+                        DBHelper.Normalize(reader["Position"].ToString()),
+                        DateTime.Parse(reader["DateOfCompletion"].ToString()).ToShortDateString());
                 grid_employeers.Items.Add(employee);
             }
             connection.Close();
@@ -249,6 +191,7 @@ namespace Human_Resources_Department
             stack_sort.IsEnabled = true;
             text_from.Foreground = Brushes.Black;
             text_to.Foreground = Brushes.Black;
+            stack_find.Visibility = Visibility.Collapsed;
         }
         private void check_ageSort_Unchecked(object sender, RoutedEventArgs e)
         {
@@ -256,6 +199,7 @@ namespace Human_Resources_Department
             text_from.Foreground = Brushes.Gray;
             text_to.Foreground = Brushes.Gray;
             text_found.Visibility = Visibility.Collapsed;
+            stack_find.Visibility = Visibility.Visible;
             UpdateMainGrid();
         }
         private void btn_updSort_Click(object sender, RoutedEventArgs e)
@@ -284,6 +228,120 @@ namespace Human_Resources_Department
                 grid_employeers.Items.Add(item);
             text_found.Visibility = Visibility.Visible;
             text_found.Text = "Знайдено: " + list.Count.ToString();
+        }
+
+        private void button_delete_Click(object sender, RoutedEventArgs e)
+        {
+            Employee employee = grid_employeers.SelectedItem as Employee;
+            if (employee != null)
+            {
+                if (MessageBox.Show($"Видалити {DBHelper.Normalize(employee.surname)} {DBHelper.Normalize(employee.name)} з бази данних?", "Ви впевненi?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    string IID = GetIID();
+                    DBHelper.ClearTable(connection, "[Table]", IID);
+                    DBHelper.ClearTable(connection, "[Appointment]", IID);
+                    DBHelper.ClearTable(connection, "[Diploma]", IID);
+                    DBHelper.ClearTable(connection, "[Educations]", IID);
+                    DBHelper.ClearTable(connection, "[Family]", IID);
+                    DBHelper.ClearTable(connection, "[Military]", IID);
+                    DBHelper.ClearTable(connection, "[Profession]", IID);
+                    DBHelper.ClearTable(connection, "[Vacation]", IID);
+                    UpdateMainGrid();
+
+                }
+            }
+        }
+        private string GetIID()
+        {
+            string IID = "-1";
+            Employee employee = grid_employeers.SelectedItem as Employee;
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "Select IID From [Table] Where Name = @name AND Surname = @sur AND Lastname = @last AND Department = @dep AND Position = @pos";
+            Dictionary<string, string> dS = new Dictionary<string, string>()
+            {
+                {"@name",employee.name},
+                {"@sur",employee.surname },
+                {"@last",employee.lastname },
+                {"@dep",employee.department },
+                {"@pos",employee.position }
+            };
+            foreach (var item in dS)
+                cmd.Parameters.AddWithValue(item.Key, item.Value);
+            SqlDataReader dataReader = cmd.ExecuteReader();
+            while (dataReader.Read())
+            {
+                IID = DBHelper.Normalize(dataReader[0].ToString());
+            }
+            connection.Close();
+            return IID;
+        }
+
+        private void btn_findSur_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(textB_surSort.Text))
+            {
+                UpdateMainGrid();
+                return;
+            }
+            connection.Open();
+            SqlCommand cmd = new SqlCommand();
+            switch (combo_findFilter.SelectedIndex)
+            {
+                //new string[] { "Прiзвище", "Iм'я", "По батьковi", "Пiдроздiл", "Посада" }
+                case 0:
+                    cmd.CommandText = "select Surname,Name,Lastname,Department,Position,DateOfCompletion from [table] where Surname = @sur";
+                    cmd.Parameters.AddWithValue("@sur", textB_surSort.Text);
+                    break;
+                case 1:
+                    cmd.CommandText = "select Surname,Name,Lastname,Department,Position,DateOfCompletion from [table] where Name = @Name";
+                    cmd.Parameters.AddWithValue("@Name", textB_surSort.Text);
+                    break;
+                case 2:
+                    cmd.CommandText = "select Surname,Name,Lastname,Department,Position,DateOfCompletion from [table] where Lastname = @Lastname";
+                    cmd.Parameters.AddWithValue("@Lastname", textB_surSort.Text);
+                    break;
+                case 3:
+                    cmd.CommandText = "select Surname,Name,Lastname,Department,Position,DateOfCompletion from [table] where Department = @Department";
+                    cmd.Parameters.AddWithValue("@Department", textB_surSort.Text);
+                    break;
+                case 4:
+                    cmd.CommandText = "select Surname,Name,Lastname,Department,Position,DateOfCompletion from [table] where Position = @Position";
+                    cmd.Parameters.AddWithValue("@Position", textB_surSort.Text);
+                    break;
+                default:
+                    cmd.CommandText = "select Surname,Name,Lastname,Department,Position,DateOfCompletion from [table] where Surname = @sur";
+                    cmd.Parameters.AddWithValue("@sur", textB_surSort.Text);
+                    break;
+            }
+            cmd.Connection = connection;
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                grid_employeers.Items.Clear();
+                while (reader.Read())
+                {
+                    Employee employee = new Employee(
+                            DBHelper.Normalize(reader["Name"].ToString()),
+                            DBHelper.Normalize(reader["Surname"].ToString()),
+                            DBHelper.Normalize(reader["Lastname"].ToString()),
+                            DBHelper.Normalize(reader["Department"].ToString()),
+                            DBHelper.Normalize(reader["Position"].ToString()),
+                            DateTime.Parse(reader["DateOfCompletion"].ToString()).ToShortDateString());
+                    grid_employeers.Items.Add(employee);
+                }
+                MessageBox.Show($"Знайдено {grid_employeers.Items.Count}", "Iнформацiя", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Нiчого не знайдено", "Iнформацiя", MessageBoxButton.OK, MessageBoxImage.Information);
+                UpdateMainGrid();
+                return;
+            }
+            textB_surSort.Text = string.Empty;
+            text_currentCount.Text = grid_employeers.Items.Count.ToString();
+            connection.Close();
         }
     }
 }

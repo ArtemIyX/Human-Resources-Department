@@ -145,7 +145,6 @@ namespace Human_Resources_Department
                 text_days.Text = (datePicker_end.SelectedDate - datePicker_begin.SelectedDate).Value.TotalDays.ToString();
             }
         }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             RefreshGrid();

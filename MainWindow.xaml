@@ -45,6 +45,14 @@
                     Click="button_edit_Click">
                 <TextBlock Text="Редагувати" TextAlignment="Center"  FontSize="28" TextWrapping="Wrap" Margin="0"  ></TextBlock>
             </Button>
+            <Button x:Name="button_delete"
+                    Margin="0,12,10,10" 
+                    MinHeight="75" 
+                    HorizontalAlignment="Right" Background="#FFFFE5E5" BorderBrush="Black" 
+                    Width="250" Height="50"
+                    Click="button_delete_Click">
+                <TextBlock Text="Видалити" TextAlignment="Center"  FontSize="28" TextWrapping="Wrap" Margin="0"  ></TextBlock>
+            </Button>
             <Button x:Name="button_debug" 
                     Margin="0,12,10,10" 
                     MinHeight="75" 
@@ -55,6 +63,7 @@
                     Visibility="Collapsed">
                 DEBUG
             </Button>
+
             <StackPanel Orientation="Horizontal" Margin="10,10,0,10">
                 <Viewbox Width="35" Height="35">
                     <CheckBox Checked="check_ageSort_Checked" Unchecked="check_ageSort_Unchecked" x:Name="check_ageSort" ></CheckBox>
@@ -66,10 +75,23 @@
                 <TextBox x:Name="textB_from" FontSize="18" Width="35" Margin="5"></TextBox>
                 <TextBlock x:Name="text_to" Text="До" FontSize="25"></TextBlock>
                 <TextBox x:Name="textB_to" FontSize="18" Width="35" Margin="5"></TextBox>
-                <Button x:Name="btn_updSort" Click="btn_updSort_Click" Margin="3" Background ="#FFEEFFFE">
+                <Button x:Name="btn_updSort" Click="btn_updSort_Click" Margin="3" Background = "GhostWhite">
                     <TextBlock Text="Оновити" FontSize="21" ></TextBlock>
                 </Button>
             </StackPanel>
+            <StackPanel x:Name="stack_find">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock  Text="Знайти за " Margin="10,0,0,0" HorizontalAlignment="Left" FontSize="25"></TextBlock>
+                    <ComboBox x:Name="combo_findFilter" Width="160" Margin="0,5,5,0"></ComboBox>
+                </StackPanel>
+                <StackPanel  Orientation="Horizontal">
+                    <TextBox x:Name="textB_surSort"   TextAlignment="Right" VerticalAlignment="Stretch"  FontSize="24" Margin="7,7,7,7" Width="186"></TextBox>
+                    <Button x:Name="btn_findSur" Click="btn_findSur_Click" HorizontalAlignment="Left" Margin="5" Background="GhostWhite" Height="34">
+                        <TextBlock Text="Знайти" FontSize="20"></TextBlock>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+            
             <TextBlock Visibility="Collapsed" x:Name="text_found" Text="Знайдено: " Margin="10,0,0,0" HorizontalAlignment="Left" FontSize="25"></TextBlock>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="5">
@@ -79,6 +101,8 @@
             <TextBox x:Name="text_male" IsReadOnly="True" HorizontalAlignment="Left" TextAlignment="Right" VerticalAlignment="Stretch" Text="0" FontSize="24" Width="75" Margin="7"></TextBox>
             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="Жiнок:" FontSize="25"></TextBlock>
             <TextBox x:Name="text_female" IsReadOnly="True" HorizontalAlignment="Left" TextAlignment="Right" VerticalAlignment="Stretch" Text="0" FontSize="24" Width="75" Margin="7"></TextBox>
+            <TextBlock HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Center" Text="На таблицi:" FontSize="25" />
+            <TextBox x:Name="text_currentCount" IsReadOnly="True" HorizontalAlignment="Left" TextAlignment="Right" VerticalAlignment="Stretch" Text="0" FontSize="24" Width="75" Margin="7"></TextBox>
         </StackPanel>
     </Grid>
 </Window>
